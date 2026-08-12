@@ -1,4 +1,9 @@
-/** Presets de next/image: equilibrio entre nitidez y peso. */
+/**
+ * Presets de next/image (layout / hinting).
+ * Con `images.unoptimized` el navegador recibe el archivo de /public tal cual;
+ * `sizes` sigue siendo útil para el atributo HTML y futuras optimizaciones.
+ * `imageQuality` se mantiene por API de SmartImage (no-op en runtime unoptimized).
+ */
 
 export const imageQuality = {
   /** Hero a pantalla completa (LCP) */

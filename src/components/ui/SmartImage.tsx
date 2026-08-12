@@ -23,7 +23,10 @@ const qualityForPreset: Record<Preset, number> = {
   logo: imageQuality.chrome,
 };
 
-/** Imagen optimizada con tamaños, calidad y blur según el preset. */
+/**
+ * next/image con blur + sizes por preset.
+ * Las URLs apuntan a /public (unoptimized): sin /_next/image ni Vercel Image Optimization.
+ */
 export function SmartImage({
   src,
   alt,
@@ -43,6 +46,7 @@ export function SmartImage({
       alt={alt}
       sizes={imageSizes[preset]}
       quality={resolvedQuality}
+      unoptimized
       placeholder={blur ? "blur" : "empty"}
       blurDataURL={blur}
       priority={priority}
