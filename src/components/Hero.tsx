@@ -23,16 +23,18 @@ export function Hero() {
           animate={{ scale: 1 }}
           transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <SmartImage
-            src={hero.image.src}
-            alt={hero.image.alt}
-            preset="hero"
-            fill
-            priority
-            className={`object-cover object-[72%_14%] sm:object-[62%_16%] lg:object-[54%_18%] ${
-              reduce ? "" : "hero-kenburns"
-            }`}
-          />
+          <div className="absolute inset-0 max-sm:scale-[1.22] max-sm:translate-y-[9%] max-sm:will-change-transform">
+            <SmartImage
+              src={hero.image.src}
+              alt={hero.image.alt}
+              preset="hero"
+              fill
+              priority
+              className={`object-cover object-[52%_20%] sm:object-[62%_16%] lg:object-[54%_18%] ${
+                reduce ? "" : "hero-kenburns"
+              }`}
+            />
+          </div>
         </motion.div>
         <div className="hero-scrim" aria-hidden />
       </div>

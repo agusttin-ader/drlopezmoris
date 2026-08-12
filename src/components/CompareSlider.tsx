@@ -66,7 +66,7 @@ export function CompareSlider({
   return (
     <div
       ref={frameRef}
-      className={`compare-frame media-skeleton group relative overflow-hidden bg-deep select-none touch-none ${className}`.trim()}
+      className={`compare-frame group relative overflow-hidden bg-deep select-none touch-none ${className}`.trim()}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -172,13 +172,13 @@ export function ToggleCompare({
   const alt = showing === "before" ? beforeAlt : afterAlt;
 
   return (
-    <div className={`compare-frame media-skeleton relative overflow-hidden bg-deep ${className}`.trim()}>
+    <div className={`compare-frame relative overflow-hidden bg-deep ${className}`.trim()}>
       <SmartImage
         src={src}
         alt={alt}
         preset="compare"
         fill
-        className="object-contain"
+        className="object-cover object-center"
       />
       <div className="absolute inset-x-0 bottom-0 flex justify-center gap-2 p-4">
         <button

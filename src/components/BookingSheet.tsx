@@ -103,10 +103,17 @@ export function BookingSheet() {
               <button
                 type="button"
                 onClick={dismiss}
-                className="focus-ring flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-lg leading-none text-text-muted"
+                className="focus-ring flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-border-strong hover:text-text"
                 aria-label="Cerrar formulario"
               >
-                ×
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path
+                    d="M6 6L18 18M18 6L6 18"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </button>
             </div>
 
