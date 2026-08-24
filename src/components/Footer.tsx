@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { nav, site } from "@/lib/content";
 import { BrandLogo } from "./BrandLogo";
 import { Container } from "./ui/Container";
@@ -73,11 +74,36 @@ export function Footer() {
       </Container>
 
       <div className="border-t border-white/10">
-        <Container className="flex flex-col gap-2 py-5 type-small text-inverse/45 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} {site.name}. Todos los derechos reservados.
-          </p>
-          <p>Buenos Aires, Argentina</p>
+        <Container className="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <div className="flex flex-col gap-1.5 type-small text-inverse/45 sm:flex-row sm:items-center sm:gap-4">
+            <p>
+              © {year} {site.name}. Todos los derechos reservados.
+            </p>
+            <p>Buenos Aires, Argentina</p>
+          </div>
+
+          <a
+            href="https://www.agustinaderdev.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="focus-ring inline-flex shrink-0 items-center gap-2.5 text-xs leading-none text-white/65 transition-colors hover:text-white/80 sm:ml-auto"
+            aria-label="Desarrollado por Agustin Ader — sitio web del desarrollador (se abre en una pestaña nueva)"
+          >
+            <span className="relative h-7 w-9 shrink-0 sm:h-8 sm:w-10">
+              <Image
+                src="/images/logo-dev/logo-dev.webp"
+                alt=""
+                fill
+                unoptimized
+                sizes="40px"
+                className="object-contain drop-shadow-[0_0_1.5px_rgba(255,255,255,0.85)]"
+              />
+            </span>
+            <span>
+              Desarrollado por{" "}
+              <span className="font-medium text-white/85">Agustin Ader</span>
+            </span>
+          </a>
         </Container>
       </div>
     </footer>
