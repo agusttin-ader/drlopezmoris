@@ -11,16 +11,16 @@ type RevealProps = HTMLMotionProps<"div"> & {
   variant?: Variant;
 };
 
-const initialFor: Record<Variant, { opacity: number; y?: number; filter?: string }> = {
-  up: { opacity: 0, y: 32 },
+const initialFor: Record<Variant, { opacity: number; y?: number }> = {
+  up: { opacity: 0, y: 28 },
   fade: { opacity: 0 },
-  soft: { opacity: 0, y: 18, filter: "blur(6px)" },
+  soft: { opacity: 0, y: 20 },
 };
 
-const animateFor: Record<Variant, { opacity: number; y?: number; filter?: string }> = {
+const animateFor: Record<Variant, { opacity: number; y?: number }> = {
   up: { opacity: 1, y: 0 },
   fade: { opacity: 1 },
-  soft: { opacity: 1, y: 0, filter: "blur(0px)" },
+  soft: { opacity: 1, y: 0 },
 };
 
 export function Reveal({
@@ -41,8 +41,8 @@ export function Reveal({
       className={className}
       initial={initialFor[variant]}
       whileInView={animateFor[variant]}
-      viewport={{ once: true, margin: "-12% 0px" }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
+      viewport={{ once: true, amount: 0.12, margin: "0px 0px -8% 0px" }}
+      transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1], delay }}
       {...props}
     >
       {children}

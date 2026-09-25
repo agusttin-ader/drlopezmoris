@@ -1,14 +1,17 @@
 "use client";
 
 import { useState, type FormEvent, type HTMLAttributes } from "react";
-import { contactIntro, hero, locations, site } from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { useBooking } from "./BookingProvider";
+import { LocationLine } from "./LocationLine";
 import { Reveal } from "./Reveal";
-import { Button, LinkButton } from "./ui/Button";
+import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
+import { MailIcon } from "./icons/MailIcon";
 import { SectionHeading } from "./ui/SectionHeading";
 
 export function Contact() {
+  const { contactIntro, contactForm, hero, site } = useMessages();
   const { openBooking } = useBooking();
   const [sent, setSent] = useState(false);
 
@@ -21,11 +24,11 @@ export function Contact() {
     const mensaje = String(data.get("mensaje") || "").trim();
 
     const text = [
-      "Hola Dr. López Moris, quiero contactarte.",
-      `Nombre: ${nombre}`,
-      `Teléfono: ${telefono}`,
-      email ? `Email: ${email}` : null,
-      mensaje ? `Mensaje: ${mensaje}` : null,
+      contactForm.whatsappIntro,
+      `${contactForm.name}: ${nombre}`,
+      `${contactForm.phone}: ${telefono}`,
+      email ? `${contactForm.email}: ${email}` : null,
+      mensaje ? `${contactForm.message}: ${mensaje}` : null,
     ]
       .filter(Boolean)
       .join("\n");
@@ -40,7 +43,7 @@ export function Contact() {
 
   return (
     <section id="contacto" className="section">
-      <Container className="grid gap-12 lg:grid-cols-[1fr_0.95fr] lg:gap-16">
+      <Container className="grid gap-12 lg:grid-cols-[1fr_0.95fr] lg:gap-16 xl:gap-20 2xl:gap-24">
         <Reveal>
           <SectionHeading
             eyebrow={contactIntro.eyebrow}
@@ -48,78 +51,78 @@ export function Contact() {
             support={contactIntro.support}
           />
 
-          <div className="mt-8 space-y-0 divide-y divide-border border-t border-border">
-            {locations.map((loc) => (
-              <div key={loc.name} className="py-5">
-                <h3 className="type-h3 text-text">{loc.name}</h3>
-                <p className="mt-1 type-body text-text-muted">{loc.address}</p>
-                <p className="mt-1 type-small text-text-faint">{loc.hours}</p>
-              </div>
-            ))}
+          <div className="mt-8 space-y-5 border-t border-border pt-6">
+            <a
+              href={`mailto:${site.email}`}
+              className="contact-mail group text-text-muted hover:text-text"
+            >
+              <span className="contact-mail__icon text-accent" aria-hidden>
+                <MailIcon />
+              </span>
+              <span className="type-body break-all sm:break-normal">{site.email}</span>
+            </a>
+            <LocationLine />
           </div>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8">
             <Button onClick={openBooking} block className="sm:w-auto">
               {hero.primaryCta}
             </Button>
-            <LinkButton
-              href={site.whatsappUrl}
-              variant="whatsapp"
-              external
-              block
-              className="sm:w-auto"
-            >
-              WhatsApp
-            </LinkButton>
           </div>
         </Reveal>
 
         <Reveal delay={0.05}>
-          <form
-            onSubmit={onSubmit}
-            className="border-t border-border pt-5 sm:border sm:border-border sm:bg-surface sm:p-5 sm:shadow-[0_12px_40px_rgba(26,28,27,0.06)] md:rounded-2xl md:p-6"
-          >
-            <h3 className="font-display text-xl leading-tight text-text sm:text-[1.35rem]">
-              Escribime
-            </h3>
-            <p className="mt-1 text-[0.8125rem] text-text-muted">
-              Te respondo a la brevedad por WhatsApp.
-            </p>
+          <form onSubmit={onSubmit} className="contact-form">
+            <div className="contact-form__intro">
+              <p className="type-eyebrow">{contactForm.eyebrow}</p>
+              <h3 className="contact-form__title font-display text-[clamp(1.65rem,3.2vw,2rem)] leading-[1.05] tracking-[-0.02em] text-text">
+                {contactForm.title}
+              </h3>
+              <p className="contact-form__lead mt-2 max-w-sm text-[0.9375rem] leading-relaxed text-text-muted">
+                {contactForm.lead}
+              </p>
+            </div>
 
-            <div className="mt-4 grid gap-2.5 sm:grid-cols-2 sm:gap-3">
-              <Field label="Nombre" name="nombre" required autoComplete="name" />
+            <div className="contact-form__fields">
+              <Field label={contactForm.name} name="nombre" required autoComplete="name" />
               <Field
-                label="Teléfono"
+                label={contactForm.phone}
                 name="telefono"
                 type="tel"
                 required
                 autoComplete="tel"
                 inputMode="tel"
               />
-              <div className="sm:col-span-2">
-                <Field label="Email" name="email" type="email" autoComplete="email" />
-              </div>
-              <label className="block sm:col-span-2">
-                <span className="booking-label">Mensaje</span>
+              <Field
+                className="sm:col-span-2"
+                label={contactForm.email}
+                name="email"
+                type="email"
+                autoComplete="email"
+              />
+              <label className="contact-field sm:col-span-2">
+                <span className="contact-label">{contactForm.message}</span>
                 <textarea
                   name="mensaje"
-                  rows={3}
+                  rows={4}
                   required
-                  className="booking-input booking-textarea focus-ring"
-                  placeholder="¿En qué puedo ayudarte?"
+                  className="contact-input contact-textarea focus-ring"
+                  placeholder={contactForm.messagePlaceholder}
                 />
               </label>
             </div>
 
-            <Button type="submit" className="mt-4 min-h-11" block>
-              {sent ? "Abrir WhatsApp" : "Enviar por WhatsApp"}
-            </Button>
-            <p className="mt-2 text-center text-[0.75rem] text-text-faint">
-              O llamá al{" "}
-              <a href={site.phoneHref} className="underline underline-offset-2">
-                {site.phoneDisplay}
-              </a>
-            </p>
+            <div className="contact-form__actions">
+              <Button type="submit" className="min-h-11" block>
+                {sent ? contactForm.submitOpen : contactForm.submit}
+              </Button>
+              <p className="contact-form__phone">
+                {contactForm.phoneOr}{" "}
+                <a href={site.phoneHref} className="contact-form__phone-link focus-ring">
+                  {site.phoneDisplay}
+                </a>
+              </p>
+            </div>
           </form>
         </Reveal>
       </Container>
@@ -134,6 +137,7 @@ function Field({
   required,
   autoComplete,
   inputMode,
+  className = "",
 }: {
   label: string;
   name: string;
@@ -141,17 +145,18 @@ function Field({
   required?: boolean;
   autoComplete?: string;
   inputMode?: HTMLAttributes<HTMLInputElement>["inputMode"];
+  className?: string;
 }) {
   return (
-    <label className="block min-w-0">
-      <span className="booking-label">{label}</span>
+    <label className={`contact-field min-w-0 ${className}`.trim()}>
+      <span className="contact-label">{label}</span>
       <input
         name={name}
         type={type}
         required={required}
         autoComplete={autoComplete}
         inputMode={inputMode}
-        className="booking-input focus-ring"
+        className="contact-input focus-ring"
       />
     </label>
   );

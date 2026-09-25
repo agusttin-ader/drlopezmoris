@@ -26,7 +26,9 @@ export function SectionHeading({
     tone === "dark" ? "text-inverse-muted" : "text-text-muted";
 
   return (
-    <div className={`flex max-w-[40rem] flex-col ${alignClass} ${className}`.trim()}>
+    <div
+      className={`flex max-w-[40rem] flex-col xl:max-w-[42rem] 2xl:max-w-[46rem] ${alignClass} ${className}`.trim()}
+    >
       {eyebrow ? <p className="type-eyebrow">{eyebrow}</p> : null}
       <TitleTag className={`type-h2 ${eyebrow ? "mt-3" : ""} text-inherit`}>{title}</TitleTag>
       {support ? (

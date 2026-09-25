@@ -1,6 +1,6 @@
 "use client";
 
-import { about, hero } from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { useBooking } from "./BookingProvider";
 import { Reveal } from "./Reveal";
 import { Button } from "./ui/Button";
@@ -9,12 +9,13 @@ import { SectionHeading } from "./ui/SectionHeading";
 import { SmartImage } from "./ui/SmartImage";
 
 export function About() {
+  const { about, hero } = useMessages();
   const { openBooking } = useBooking();
 
   return (
     <section id="sobre-mi" className="section">
       <Container>
-        <div className="grid items-start gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+        <div className="grid items-start gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 xl:gap-20 2xl:gap-24">
           <Reveal variant="soft" className="lg:sticky lg:top-24">
             <div className="grid gap-3">
               <div className="media-frame media-frame--portrait media-skeleton w-full">
@@ -72,13 +73,13 @@ export function About() {
             </Reveal>
 
             <Reveal delay={0.16}>
-              <dl className="mt-9 grid grid-cols-3 gap-3 border-t border-border pt-6">
+              <dl className="mt-9 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-border pt-6 sm:grid-cols-3 sm:gap-3">
                 {about.highlights.map((item) => (
-                  <div key={item.label}>
-                    <dt className="type-small uppercase tracking-[0.1em] text-text-faint">
+                  <div key={item.label} className="min-w-0">
+                    <dt className="text-[0.6875rem] font-medium uppercase leading-snug tracking-[0.08em] text-text-faint sm:type-small sm:tracking-[0.1em]">
                       {item.label}
                     </dt>
-                    <dd className="mt-1 font-display text-lg text-text sm:text-xl">
+                    <dd className="mt-1 font-display text-base text-text sm:text-lg md:text-xl">
                       {item.value}
                     </dd>
                   </div>

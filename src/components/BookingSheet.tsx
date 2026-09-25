@@ -8,11 +8,12 @@ import {
   type HTMLAttributes,
 } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { hero, site } from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { useBooking } from "./BookingProvider";
 import { Button } from "./ui/Button";
 
 export function BookingSheet() {
+  const { hero, site, bookingCopy } = useMessages();
   const { open, closeBooking } = useBooking();
   const reduce = useReducedMotion();
   const titleId = useId();
@@ -49,11 +50,11 @@ export function BookingSheet() {
     const mensaje = String(data.get("mensaje") || "").trim();
 
     const text = [
-      "Hola Dr. López Moris, me gustaría agendar una cita.",
-      `Nombre: ${nombre}`,
-      `Teléfono: ${telefono}`,
-      motivo ? `Motivo: ${motivo}` : null,
-      mensaje ? `Mensaje: ${mensaje}` : null,
+      bookingCopy.whatsappIntro,
+      `${bookingCopy.name}: ${nombre}`,
+      `${bookingCopy.phone}: ${telefono}`,
+      motivo ? `${bookingCopy.reason}: ${motivo}` : null,
+      mensaje ? `${bookingCopy.message}: ${mensaje}` : null,
     ]
       .filter(Boolean)
       .join("\n");
@@ -77,7 +78,7 @@ export function BookingSheet() {
         >
           <motion.button
             type="button"
-            aria-label="Cerrar"
+            aria-label={bookingCopy.close}
             className="absolute inset-0 bg-deep/55"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -85,85 +86,76 @@ export function BookingSheet() {
             onClick={dismiss}
           />
           <motion.div
-            className="booking-sheet relative z-10 flex w-full max-w-lg flex-col overflow-hidden rounded-t-2xl bg-surface shadow-[0_12px_40px_rgba(26,28,27,0.12)] md:rounded-2xl"
+            className="booking-sheet relative z-10 w-full max-w-lg overflow-hidden rounded-t-2xl bg-surface shadow-[0_12px_40px_rgba(26,28,27,0.12)] md:rounded-2xl xl:max-w-xl"
             initial={reduce ? false : { y: 28, opacity: 0.85, scale: 0.98 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={reduce ? undefined : { y: 20, opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", damping: 28, stiffness: 340 }}
           >
-            <div className="flex items-start justify-between gap-3 border-b border-border px-4 py-3 sm:px-5">
-              <div className="min-w-0">
-                <p className="text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-text-faint">
-                  Agenda
-                </p>
-                <h2 id={titleId} className="font-display text-xl leading-tight text-text sm:text-[1.35rem]">
+            <form onSubmit={onSubmit} className="contact-form contact-form--modal">
+              <div className="contact-form__intro contact-form__intro--sheet">
+                <button
+                  type="button"
+                  onClick={dismiss}
+                  className="contact-form__close focus-ring"
+                  aria-label={bookingCopy.closeForm}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <path
+                      d="M6 6L18 18M18 6L6 18"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+                <p className="type-eyebrow">{bookingCopy.eyebrow}</p>
+                <h2
+                  id={titleId}
+                  className="contact-form__title font-display text-[clamp(1.65rem,3.2vw,2rem)] leading-[1.05] tracking-[-0.02em] text-text"
+                >
                   {hero.primaryCta}
                 </h2>
+                <p className="contact-form__lead mt-2 max-w-sm text-[0.9375rem] leading-relaxed text-text-muted">
+                  {bookingCopy.lead}
+                </p>
               </div>
-              <button
-                type="button"
-                onClick={dismiss}
-                className="focus-ring flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-text-muted transition hover:border-border-strong hover:text-text"
-                aria-label="Cerrar formulario"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path
-                    d="M6 6L18 18M18 6L6 18"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
-            </div>
 
-            <form
-              onSubmit={onSubmit}
-              className="flex flex-col gap-2.5 px-4 py-3.5 sm:gap-3 sm:px-5 sm:py-4"
-            >
-              <p className="text-[0.8125rem] leading-snug text-text-muted">
-                Te redirigimos a WhatsApp para confirmar el turno.
-              </p>
-
-              <div className="grid gap-2.5 sm:grid-cols-2 sm:gap-3">
-                <Field label="Nombre y apellido" name="nombre" required autoComplete="name" />
+              <div className="contact-form__fields">
+                <Field label={bookingCopy.name} name="nombre" required autoComplete="name" />
                 <Field
-                  label="Teléfono / WhatsApp"
+                  label={bookingCopy.phone}
                   name="telefono"
                   type="tel"
                   required
                   autoComplete="tel"
                   inputMode="tel"
                 />
+                <Field
+                  className="sm:col-span-2"
+                  label={bookingCopy.reason}
+                  name="motivo"
+                  placeholder={bookingCopy.reasonPlaceholder}
+                />
+                <label className="contact-field sm:col-span-2">
+                  <span className="contact-label">{bookingCopy.message}</span>
+                  <textarea
+                    name="mensaje"
+                    rows={3}
+                    className="contact-input contact-textarea focus-ring"
+                    placeholder={bookingCopy.messagePlaceholder}
+                  />
+                </label>
               </div>
 
-              <Field
-                label="Motivo de consulta"
-                name="motivo"
-                placeholder="Respiración, rinoplastia…"
-              />
-
-              <label className="block">
-                <span className="booking-label">Mensaje (opcional)</span>
-                <textarea
-                  name="mensaje"
-                  rows={2}
-                  className="booking-input booking-textarea focus-ring"
-                  placeholder="Breve detalle, si querés"
-                />
-              </label>
-
-              <div className="mt-0.5 flex flex-col gap-2 pt-0.5">
-                <Button type="submit" block className="min-h-11">
-                  {status === "sent" ? "Abrir WhatsApp" : "Continuar por WhatsApp"}
+              <div className="contact-form__actions">
+                <Button type="submit" className="min-h-11" block>
+                  {status === "sent" ? bookingCopy.submitOpen : bookingCopy.submit}
                 </Button>
-                <p className="text-center text-[0.75rem] text-text-faint">
-                  O{" "}
-                  <a
-                    href={site.phoneHref}
-                    className="underline underline-offset-2 hover:text-text-muted"
-                  >
-                    llamá al {site.phoneDisplay}
+                <p className="contact-form__phone">
+                  {bookingCopy.phoneOr}{" "}
+                  <a href={site.phoneHref} className="contact-form__phone-link focus-ring">
+                    {bookingCopy.phoneCall} {site.phoneDisplay}
                   </a>
                 </p>
               </div>
@@ -183,6 +175,7 @@ function Field({
   placeholder,
   autoComplete,
   inputMode,
+  className = "",
 }: {
   label: string;
   name: string;
@@ -191,10 +184,11 @@ function Field({
   placeholder?: string;
   autoComplete?: string;
   inputMode?: HTMLAttributes<HTMLInputElement>["inputMode"];
+  className?: string;
 }) {
   return (
-    <label className="block min-w-0">
-      <span className="booking-label">{label}</span>
+    <label className={`contact-field min-w-0 ${className}`.trim()}>
+      <span className="contact-label">{label}</span>
       <input
         name={name}
         type={type}
@@ -202,7 +196,7 @@ function Field({
         placeholder={placeholder}
         autoComplete={autoComplete}
         inputMode={inputMode}
-        className="booking-input focus-ring"
+        className="contact-input focus-ring"
       />
     </label>
   );

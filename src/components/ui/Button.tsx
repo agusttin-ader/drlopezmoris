@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 
 type Variant = "primary" | "secondary" | "ghost" | "on-dark" | "whatsapp";
 
@@ -43,6 +43,7 @@ type LinkButtonProps = {
   children: ReactNode;
   external?: boolean;
   ariaLabel?: string;
+  onClick?: AnchorHTMLAttributes<HTMLAnchorElement>["onClick"];
 };
 
 export function LinkButton({
@@ -53,12 +54,14 @@ export function LinkButton({
   children,
   external = false,
   ariaLabel,
+  onClick,
 }: LinkButtonProps) {
   return (
     <a
       href={href}
       className={`btn focus-ring ${variantClass[variant]} ${block ? "btn-block" : ""} ${className}`.trim()}
       aria-label={ariaLabel}
+      onClick={onClick}
       {...(external
         ? { target: "_blank", rel: "noopener noreferrer" }
         : {})}

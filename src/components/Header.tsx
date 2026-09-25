@@ -2,19 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { hero, nav, site } from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { BrandLogo } from "./BrandLogo";
-import { useBooking } from "./BookingProvider";
-import { Button } from "./ui/Button";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Container } from "./ui/Container";
 
 export function Header() {
-  const { openBooking } = useBooking();
+  const { site, nav, hero, ui } = useMessages();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 20);
+        ticking = false;
+      });
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -53,6 +60,9 @@ export function Header() {
   }, [menuOpen]);
 
   const solid = scrolled || menuOpen;
+  const logoOn = menuOpen ? "dark" : solid ? "light" : "dark";
+  const langOnDark = menuOpen || !solid;
+  const menuHeaderTone = menuOpen;
 
   const goToInicio = () => {
     setMenuOpen(false);
@@ -62,41 +72,44 @@ export function Header() {
     }
   };
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-[background,box-shadow,color,border-color] duration-300 ${
-        menuOpen ? "bottom-0" : ""
+        menuOpen ? "bottom-0 max-lg:bg-deep" : ""
       } ${
-        solid
-          ? "border-b border-border bg-background/92 text-text shadow-[0_8px_28px_rgba(26,28,27,0.06)] backdrop-blur-md"
-          : "border-b border-transparent bg-transparent text-inverse"
+        menuHeaderTone
+          ? "max-lg:border-white/10 max-lg:bg-deep max-lg:text-inverse max-lg:shadow-none max-lg:backdrop-blur-none"
+          : solid
+            ? "border-b border-border bg-background/92 text-text shadow-[0_8px_28px_rgba(26,28,27,0.06)] backdrop-blur-md"
+            : "border-b border-transparent bg-transparent text-inverse"
       }`}
     >
-      <Container className="relative z-10 flex h-[var(--header-h)] items-center justify-between gap-3">
+      <Container className="relative z-10 flex h-[var(--header-h)] items-center justify-between gap-2 sm:gap-3">
         <a
           href="#inicio"
-          className="focus-ring flex min-h-11 items-center gap-2.5 rounded-full pr-1"
+          className="focus-ring flex min-h-11 min-w-0 shrink items-center gap-2 rounded-full pr-1 sm:gap-2.5 lg:gap-2.5"
           onClick={(e) => {
             e.preventDefault();
             goToInicio();
           }}
         >
-          <BrandLogo
-            on={solid ? "light" : "dark"}
-            size={32}
-            className="h-8 w-8"
-          />
-          <span className="font-display text-[1.05rem] leading-none tracking-tight sm:text-lg">
+          <BrandLogo on={logoOn} size={36} className="h-9 w-9 lg:h-8 lg:w-8" />
+          <span className="hidden truncate font-display text-[1rem] leading-none tracking-tight lg:inline lg:text-base xl:text-lg">
             {site.shortName}
           </span>
         </a>
 
-        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Principal">
+        <nav
+          className="hidden min-w-0 items-center gap-0.5 lg:flex xl:gap-1 2xl:gap-1.5"
+          aria-label="Principal"
+        >
           {nav.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className={`focus-ring rounded-full px-3 py-2 text-sm transition-colors ${
+              className={`focus-ring rounded-full px-2 py-2 text-[0.8125rem] transition-colors xl:px-3.5 xl:text-sm 2xl:text-[0.9375rem] ${
                 solid
                   ? "text-text-muted hover:text-text"
                   : "text-inverse-muted hover:text-inverse"
@@ -107,49 +120,40 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="header-actions">
+          <LanguageSwitcher onDark={langOnDark} />
           <a
-            href={site.phoneHref}
-            className={`focus-ring hidden min-h-11 items-center rounded-full px-2 text-sm font-medium lg:inline-flex ${
-              solid ? "text-text-muted hover:text-text" : "text-inverse-muted hover:text-inverse"
+            href="#contacto"
+            className={`focus-ring header-action !hidden lg:!inline-flex ${
+              solid ? "header-action--cta-on-light" : "header-action--cta-on-dark"
             }`}
-            aria-label={`Llamar al ${site.phoneDisplay}`}
           >
-            {site.phoneDisplay}
+            {hero.headerCta}
           </a>
-          <Button
-            onClick={openBooking}
-            variant={solid ? "primary" : "on-dark"}
-            className="hidden md:inline-flex"
-          >
-            {hero.primaryCta}
-          </Button>
           <button
             type="button"
-            className={`focus-ring inline-flex h-11 w-11 items-center justify-center rounded-full border lg:hidden ${
-              solid
-                ? "border-border bg-surface/80 text-text"
-                : "border-white/30 bg-white/10 text-inverse"
+            className={`header-menu-toggle focus-ring inline-flex h-11 w-11 items-center justify-center lg:hidden ${
+              menuHeaderTone ? "text-inverse" : solid ? "text-text" : "text-inverse"
             }`}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
-            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={menuOpen ? ui.menuClose : ui.menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
           >
-            <span aria-hidden className="relative block h-3.5 w-4">
+            <span aria-hidden className="relative block h-[0.875rem] w-[1.35rem]">
               <span
-                className={`absolute left-0 top-0 h-px w-full bg-current transition ${
-                  menuOpen ? "top-1.5 rotate-45" : ""
+                className={`absolute inset-x-0 top-0 h-[2.5px] rounded-full bg-current transition-transform duration-200 ${
+                  menuOpen ? "top-1/2 -translate-y-1/2 rotate-45" : ""
                 }`}
               />
               <span
-                className={`absolute left-0 top-1.5 h-px w-full bg-current transition ${
-                  menuOpen ? "opacity-0" : ""
+                className={`absolute inset-x-0 top-1/2 h-[2.5px] -translate-y-1/2 rounded-full bg-current transition-opacity duration-200 ${
+                  menuOpen ? "opacity-0" : "opacity-100"
                 }`}
               />
               <span
-                className={`absolute left-0 top-3 h-px w-full bg-current transition ${
-                  menuOpen ? "top-1.5 -rotate-45" : ""
+                className={`absolute inset-x-0 bottom-0 h-[2.5px] rounded-full bg-current transition-transform duration-200 ${
+                  menuOpen ? "bottom-1/2 translate-y-1/2 -rotate-45" : ""
                 }`}
               />
             </span>
@@ -161,70 +165,41 @@ export function Header() {
         {menuOpen ? (
           <motion.div
             id="mobile-nav"
-            className="absolute inset-x-0 top-[var(--header-h)] bottom-0 flex flex-col overflow-hidden overscroll-contain border-t border-border bg-background text-text lg:hidden"
+            className="mobile-nav-panel absolute inset-x-0 top-[var(--header-h)] bottom-0 flex flex-col overflow-y-auto overscroll-contain lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div
-              className="pointer-events-none absolute inset-0"
-              aria-hidden
-              style={{
-                background:
-                  "radial-gradient(ellipse 90% 55% at 100% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 58%), linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--surface-muted) 70%, transparent))",
-              }}
-            />
-            <nav
-              className="container-page relative flex min-h-0 flex-1 flex-col py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]"
-              aria-label="Móvil"
-            >
-              <p className="type-eyebrow mb-5">{hero.eyebrow}</p>
+            <nav className="mobile-nav container-page" aria-label={ui.mobileNav}>
+              <p className="mobile-nav__label">{ui.mobileMenuLabel}</p>
 
-              <div className="flex min-h-0 flex-1 flex-col justify-center gap-1">
+              <ul className="mobile-nav__list">
                 {nav.map((item, i) => (
-                  <motion.a
+                  <motion.li
                     key={item.href}
-                    href={item.href}
-                    className="focus-ring block rounded-sm py-2.5 font-display text-[clamp(1.85rem,8vw,2.45rem)] leading-[1.05] tracking-[-0.02em] text-text"
-                    onClick={() => setMenuOpen(false)}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.28, delay: 0.04 + i * 0.04, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {item.label}
-                  </motion.a>
-                ))}
-              </div>
-
-              <div className="mt-6 border-t border-border pt-5">
-                <p className="type-small text-text-faint">{site.title}</p>
-                <div className="mt-4 flex flex-col gap-2.5">
-                  <a
-                    href={site.phoneHref}
-                    className="focus-ring type-body text-text-muted underline-offset-4 hover:text-text hover:underline"
-                  >
-                    {site.phoneDisplay}
-                  </a>
-                  <a
-                    href={site.whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="focus-ring type-body text-text-muted underline-offset-4 hover:text-text hover:underline"
-                  >
-                    WhatsApp
-                  </a>
-                  <Button
-                    className="mt-1"
-                    block
-                    onClick={() => {
-                      setMenuOpen(false);
-                      openBooking();
+                    transition={{
+                      duration: 0.38,
+                      delay: 0.04 + i * 0.045,
+                      ease: [0.22, 1, 0.36, 1],
                     }}
                   >
-                    {hero.primaryCta}
-                  </Button>
-                </div>
+                    <a
+                      href={item.href}
+                      className="mobile-nav__link focus-ring"
+                      onClick={closeMenu}
+                    >
+                      {item.label}
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+
+              <div className="mobile-nav__brand">
+                <BrandLogo on="dark" size={56} className="h-14 w-14" />
+                <p className="mobile-nav__brand-name">{site.shortName}</p>
               </div>
             </nav>
           </motion.div>

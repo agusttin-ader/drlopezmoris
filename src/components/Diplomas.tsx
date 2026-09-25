@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -12,22 +13,27 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import {
-  credentialCategories,
-  credentialCategoryLabels,
-  credentials,
-  credentialsIntro,
-} from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { Reveal } from "./Reveal";
 import { Container } from "./ui/Container";
 import { SectionHeading } from "./ui/SectionHeading";
 import { SmartImage } from "./ui/SmartImage";
 
-type FilterId = (typeof credentialCategories)[number]["id"];
-type Cred = (typeof credentials)[number];
+type Messages = ReturnType<typeof useMessages>;
+type FilterId = Messages["credentialCategories"][number]["id"];
+type Cred = Messages["credentials"][number];
+
+const PREVIEW_COUNT = 3;
 
 export function Diplomas() {
+  const {
+    credentialCategories,
+    credentials,
+    credentialsIntro,
+    ui,
+  } = useMessages();
   const [filter, setFilter] = useState<FilterId>("all");
+  const [expanded, setExpanded] = useState(false);
   const [active, setActive] = useState<number | null>(null);
   const portalReady = useSyncExternalStore(
     () => () => {},
@@ -36,11 +42,15 @@ export function Diplomas() {
   );
   const reduce = useReducedMotion();
   const triggerRef = useRef<HTMLElement | null>(null);
-
+  const credentialsListRef = useRef<HTMLDivElement>(null);
+  const scrollToListEndRef = useRef(false);
   const items = useMemo(() => {
     if (filter === "all") return [...credentials];
     return credentials.filter((c) => c.category === filter);
-  }, [filter]);
+  }, [filter, credentials]);
+
+  const canExpand = items.length > PREVIEW_COUNT;
+  const visibleItems = expanded || !canExpand ? items : items.slice(0, PREVIEW_COUNT);
 
   const openAt = useCallback((index: number, trigger: HTMLElement) => {
     triggerRef.current = trigger;
@@ -53,8 +63,28 @@ export function Diplomas() {
 
   const selectFilter = useCallback((id: FilterId) => {
     setFilter(id);
+    setExpanded(false);
     setActive(null);
   }, []);
+
+  const toggleExpanded = useCallback(() => {
+    setExpanded((open) => {
+      if (open) scrollToListEndRef.current = true;
+      return !open;
+    });
+    setActive(null);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (expanded || !scrollToListEndRef.current) return;
+    scrollToListEndRef.current = false;
+    const node = credentialsListRef.current;
+    if (!node) return;
+    node.scrollIntoView({
+      behavior: reduce ? "auto" : "smooth",
+      block: "end",
+    });
+  }, [expanded, reduce]);
 
   useEffect(() => {
     if (active === null) return;
@@ -106,7 +136,7 @@ export function Diplomas() {
           <div
             className="credentials-filters mt-9 sm:mt-10"
             role="tablist"
-            aria-label="Filtrar certificaciones"
+            aria-label={ui.filterCredentials}
           >
             {credentialCategories.map((cat) => {
               const selected = filter === cat.id;
@@ -133,24 +163,45 @@ export function Diplomas() {
           </div>
         </Reveal>
 
-        {/* Grilla simétrica: 1 / 2 / 3 columnas */}
-        <div className="mt-9 sm:mt-10">
+        {/* Móvil: columna única (3 + ver más); sm+: 2 cols; lg+: 3 cols */}
+        <div
+          ref={credentialsListRef}
+          className="credentials-list-block mt-9 sm:mt-10"
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={filter}
-              className="credentials-grid"
+              className={`credentials-grid${!expanded && canExpand ? " credentials-grid--preview" : ""}`}
               initial={reduce ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={reduce ? undefined : { opacity: 0, y: -6 }}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             >
-              {items.map((item, index) => (
-                <Reveal key={item.id} delay={Math.min(index * 0.03, 0.18)}>
-                  <CredentialPlate item={item} onOpen={(el) => openAt(index, el)} />
-                </Reveal>
-              ))}
+              {visibleItems.map((item) => {
+                const index = items.indexOf(item);
+                const revealDelay =
+                  index < PREVIEW_COUNT ? Math.min(index * 0.03, 0.18) : 0;
+                return (
+                  <Reveal key={item.id} delay={revealDelay}>
+                    <CredentialPlate item={item} onOpen={(el) => openAt(index, el)} />
+                  </Reveal>
+                );
+              })}
             </motion.div>
           </AnimatePresence>
+
+          {canExpand ? (
+            <div className="credentials-more mt-8 sm:mt-9">
+              <button
+                type="button"
+                className="credentials-more__btn focus-ring"
+                aria-expanded={expanded}
+                onClick={toggleExpanded}
+              >
+                {expanded ? credentialsIntro.showLess : credentialsIntro.showMore}
+              </button>
+            </div>
+          ) : null}
         </div>
 
         <Reveal delay={0.06}>
@@ -202,6 +253,7 @@ function CredentialPlate({
   item: Cred;
   onOpen: (trigger: HTMLElement) => void;
 }) {
+  const { credentialCategoryLabels, ui } = useMessages();
   const category = credentialCategoryLabels[item.category];
 
   return (
@@ -222,7 +274,7 @@ function CredentialPlate({
           />
           <span className="credential-plate__veil" aria-hidden />
         </div>
-        <span className="credential-plate__hint">Ampliar documento</span>
+        <span className="credential-plate__hint">{ui.enlargeDocument}</span>
       </div>
 
       <div className="credential-plate__meta">
@@ -257,6 +309,7 @@ function CredentialViewer({
   onPrev: () => void;
   onNext: () => void;
 }) {
+  const { ui } = useMessages();
   const titleId = useId();
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -351,7 +404,7 @@ function CredentialViewer({
     >
       <button
         type="button"
-        aria-label="Cerrar"
+        aria-label={ui.close}
         data-credential-backdrop=""
         className="credential-viewer__backdrop absolute inset-0 z-0 cursor-default"
         onClick={close}
@@ -365,7 +418,7 @@ function CredentialViewer({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="credential-viewer__eyebrow">Documento</p>
+          <p className="credential-viewer__eyebrow">{ui.document}</p>
           <h3
             id={titleId}
             className="mt-1.5 font-display text-[clamp(1.35rem,3.5vw,2rem)] leading-[1.15] tracking-tight text-[var(--inverse)]"
@@ -385,7 +438,7 @@ function CredentialViewer({
           data-credential-close=""
           onClick={close}
           className="credential-viewer__icon-btn focus-ring pointer-events-auto shrink-0"
-          aria-label="Cerrar documento"
+          aria-label={ui.closeDocument}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
             <path
@@ -403,7 +456,7 @@ function CredentialViewer({
           type="button"
           onClick={nav(onPrev)}
           className="credential-viewer__nav focus-ring pointer-events-auto absolute left-2 top-1/2 z-20 hidden -translate-y-1/2 sm:left-4 md:flex"
-          aria-label="Documento anterior"
+          aria-label={ui.previousDocument}
         >
           <ChevronIcon dir="left" />
         </button>
@@ -432,7 +485,7 @@ function CredentialViewer({
           type="button"
           onClick={nav(onNext)}
           className="credential-viewer__nav focus-ring pointer-events-auto absolute right-2 top-1/2 z-20 hidden -translate-y-1/2 sm:right-4 md:flex"
-          aria-label="Documento siguiente"
+          aria-label={ui.nextDocument}
         >
           <ChevronIcon dir="right" />
         </button>
@@ -443,7 +496,7 @@ function CredentialViewer({
           type="button"
           onClick={nav(onPrev)}
           className="credential-viewer__icon-btn focus-ring pointer-events-auto md:invisible md:pointer-events-none"
-          aria-label="Documento anterior"
+          aria-label={ui.previousDocument}
         >
           <ChevronIcon dir="left" />
         </button>
@@ -458,7 +511,7 @@ function CredentialViewer({
           type="button"
           onClick={nav(onNext)}
           className="credential-viewer__icon-btn focus-ring pointer-events-auto md:invisible md:pointer-events-none"
-          aria-label="Documento siguiente"
+          aria-label={ui.nextDocument}
         >
           <ChevronIcon dir="right" />
         </button>

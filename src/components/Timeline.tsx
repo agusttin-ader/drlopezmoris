@@ -1,11 +1,13 @@
 "use client";
 
-import { timeline, timelineIntro } from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { Reveal } from "./Reveal";
 import { Container } from "./ui/Container";
 import { SectionHeading } from "./ui/SectionHeading";
 
 export function Timeline() {
+  const { timeline, timelineIntro } = useMessages();
+
   return (
     <section id="formacion" className="section">
       <Container>
@@ -26,7 +28,7 @@ export function Timeline() {
             const left = index % 2 === 0;
             return (
               <Reveal key={`${item.year}-${item.title}`} delay={index * 0.03}>
-                <li className="relative grid gap-1 py-5 pl-7 md:grid-cols-2 md:gap-10 md:py-6 md:pl-0">
+                <li className="relative grid gap-1 py-5 pl-7 md:grid-cols-2 md:gap-10 md:py-6 md:pl-0 xl:gap-14 2xl:gap-16">
                   <span
                     aria-hidden
                     className="absolute left-0 top-7 h-2.5 w-2.5 rounded-full border-2 border-accent bg-background md:left-1/2 md:top-8 md:-translate-x-1/2"

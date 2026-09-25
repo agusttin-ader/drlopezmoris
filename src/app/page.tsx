@@ -7,7 +7,7 @@ import { Gallery } from "@/components/Gallery";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
-import { StickyCTA } from "@/components/StickyCTA";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Testimonials } from "@/components/Testimonials";
 import { Timeline } from "@/components/Timeline";
 import { TrustStrip } from "@/components/TrustStrip";
@@ -48,7 +48,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <main className="flex-1 pb-[calc(var(--sticky-cta-h)+env(safe-area-inset-bottom))] md:pb-0">
+      <main className="site-main flex-1">
         <Hero />
         <TrustStrip />
         <About />
@@ -61,7 +61,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-      <StickyCTA />
+      <FloatingWhatsApp />
     </>
   );
 }

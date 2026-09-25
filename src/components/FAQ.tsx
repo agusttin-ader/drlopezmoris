@@ -2,17 +2,18 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { faqs, faqsIntro } from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { Reveal } from "./Reveal";
 import { Container } from "./ui/Container";
 import { SectionHeading } from "./ui/SectionHeading";
 
 export function FAQ() {
+  const { faqs, faqsIntro } = useMessages();
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section id="faq" className="section section-alt">
-      <Container className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+      <Container className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 xl:gap-20 2xl:gap-24">
         <Reveal>
           <SectionHeading
             eyebrow={faqsIntro.eyebrow}

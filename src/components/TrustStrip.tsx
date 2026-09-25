@@ -1,10 +1,12 @@
 "use client";
 
-import { trustIntro, trustItems } from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { Reveal } from "./Reveal";
 import { Container } from "./ui/Container";
 
 export function TrustStrip() {
+  const { trustIntro, trustItems } = useMessages();
+
   return (
     <section aria-label="Credenciales" className="border-b border-border bg-surface">
       <Container className="py-7 sm:py-8 md:py-9">

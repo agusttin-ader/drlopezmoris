@@ -7,7 +7,10 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { SmartImage } from "./ui/SmartImage";
+
+type ImagePreset = "compare" | "viewer";
 
 type CompareSliderProps = {
   beforeSrc: string;
@@ -18,6 +21,8 @@ type CompareSliderProps = {
   initialPosition?: number;
   showLabels?: boolean;
   largeHandle?: boolean;
+  imageFit?: "cover" | "contain";
+  imagePreset?: ImagePreset;
 };
 
 export function CompareSlider({
@@ -29,7 +34,11 @@ export function CompareSlider({
   initialPosition = 52,
   showLabels = true,
   largeHandle = false,
+  imageFit = "cover",
+  imagePreset = "compare",
 }: CompareSliderProps) {
+  const { ui } = useMessages();
+  const objectClass = imageFit === "contain" ? "object-contain" : "object-cover";
   const [pos, setPos] = useState(initialPosition);
   const [dragging, setDragging] = useState(false);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -92,16 +101,16 @@ export function CompareSlider({
       }}
     >
       <span id={labelId} className="sr-only">
-        Comparar antes y después
+        {ui.compareSlider}
       </span>
 
       <div className="absolute inset-0">
         <SmartImage
           src={afterSrc}
           alt={afterAlt}
-          preset="compare"
+          preset={imagePreset}
           fill
-          className="object-cover object-center"
+          className={`${objectClass} object-center`}
           draggable={false}
         />
       </div>
@@ -110,17 +119,17 @@ export function CompareSlider({
         <SmartImage
           src={beforeSrc}
           alt={beforeAlt}
-          preset="compare"
+          preset={imagePreset}
           fill
-          className="object-cover object-center"
+          className={`${objectClass} object-center`}
           draggable={false}
         />
       </div>
 
       {showLabels ? (
         <>
-          <span className="compare-label left-3">Antes</span>
-          <span className="compare-label right-3">Después</span>
+          <span className="compare-label left-3">{ui.before}</span>
+          <span className="compare-label right-3">{ui.after}</span>
         </>
       ) : null}
 
@@ -157,6 +166,8 @@ type ToggleCompareProps = {
   className?: string;
   showing: "before" | "after";
   onToggle: (next: "before" | "after") => void;
+  imageFit?: "cover" | "contain";
+  imagePreset?: ImagePreset;
 };
 
 export function ToggleCompare({
@@ -167,18 +178,22 @@ export function ToggleCompare({
   className = "",
   showing,
   onToggle,
+  imageFit = "cover",
+  imagePreset = "compare",
 }: ToggleCompareProps) {
+  const { ui } = useMessages();
   const src = showing === "before" ? beforeSrc : afterSrc;
   const alt = showing === "before" ? beforeAlt : afterAlt;
+  const objectClass = imageFit === "contain" ? "object-contain" : "object-cover";
 
   return (
     <div className={`compare-frame relative overflow-hidden bg-deep ${className}`.trim()}>
       <SmartImage
         src={src}
         alt={alt}
-        preset="compare"
+        preset={imagePreset}
         fill
-        className="object-cover object-center"
+        className={`${objectClass} object-center`}
       />
       <div className="absolute inset-x-0 bottom-0 flex justify-center gap-2 p-4">
         <button
@@ -190,7 +205,7 @@ export function ToggleCompare({
           }`}
           onClick={() => onToggle("before")}
         >
-          Antes
+          {ui.before}
         </button>
         <button
           type="button"
@@ -201,7 +216,7 @@ export function ToggleCompare({
           }`}
           onClick={() => onToggle("after")}
         >
-          Después
+          {ui.after}
         </button>
       </div>
     </div>

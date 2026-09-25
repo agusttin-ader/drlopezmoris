@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 64" role="img" aria-hidden="true">
+  <path
+    fill="#003DA5"
+    d="M28 1.5 4.5 10.2v17.3c0 14.8 9.8 28.2 23.5 32.5 13.7-4.3 23.5-17.7 23.5-32.5V10.2L28 1.5z"
+  />
+  <path
+    fill="#fff"
+    d="M28 5.2 8.2 12.4v14.8c0 11.6 7.8 22.2 19.8 25.8 12-3.6 19.8-14.2 19.8-25.8V12.4L28 5.2z"
+  />
+  <path
+    fill="#003DA5"
+    d="M28 8.8 11.5 15v13.2c0 9.4 6.4 18.2 16.5 21.2 10.1-3 16.5-11.8 16.5-21.2V15L28 8.8z"
+  />
+  <circle cx="28" cy="17.5" r="3.2" fill="#fff" />
+  <path
+    fill="#fff"
+    d="M20.5 24.5h11v2.2h-3.6v14.5h-3.8v-14.5h-3.6v-2.2zm5.5 2.2v3.2h-1.8v-3.2h1.8zm3.6 0h1.8v3.2h-1.8v-3.2z"
+  />
+  <text
+    x="28"
+    y="44.5"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="9.5"
+    font-weight="700"
+    letter-spacing="0.14em"
+    fill="#fff"
+  >
+    UBA
+  </text>
+</svg>

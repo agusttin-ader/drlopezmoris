@@ -1,22 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { gallery, galleryIntro, hero } from "@/lib/content";
+import { useMessages } from "@/i18n/LocaleProvider";
 import { useBooking } from "./BookingProvider";
 import { CompareSlider, ToggleCompare } from "./CompareSlider";
 import { Reveal } from "./Reveal";
 import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
 import { SectionHeading } from "./ui/SectionHeading";
+import { BrandLogo } from "./BrandLogo";
 import { SmartImage } from "./ui/SmartImage";
 
-type CaseItem = (typeof gallery)[number];
-
 export function Gallery() {
+  const { gallery, galleryIntro, hero } = useMessages();
   const [active, setActive] = useState<number | null>(null);
   const reduce = useReducedMotion();
   const { openBooking } = useBooking();
+  const portalReady = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     if (active === null) return;
@@ -38,7 +44,7 @@ export function Gallery() {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
     };
-  }, [active]);
+  }, [active, gallery.length]);
 
   return (
     <section id="galeria" className="section">
@@ -79,18 +85,24 @@ export function Gallery() {
         </Reveal>
       </Container>
 
-      <AnimatePresence>
-        {active !== null ? (
-          <CaseViewer
-            index={active}
-            reduce={!!reduce}
-            onClose={() => setActive(null)}
-            onPrev={() => setActive((active - 1 + gallery.length) % gallery.length)}
-            onNext={() => setActive((active + 1) % gallery.length)}
-            onSelect={setActive}
-          />
-        ) : null}
-      </AnimatePresence>
+      {portalReady
+        ? createPortal(
+            <AnimatePresence>
+              {active !== null ? (
+                <CaseViewer
+                  index={active}
+                  reduce={!!reduce}
+                  onClose={() => setActive(null)}
+                  onPrev={() =>
+                    setActive((active - 1 + gallery.length) % gallery.length)
+                  }
+                  onNext={() => setActive((active + 1) % gallery.length)}
+                />
+              ) : null}
+            </AnimatePresence>,
+            document.body,
+          )
+        : null}
     </section>
   );
 }
@@ -101,18 +113,19 @@ function CaseStudyCard({
   featured,
   onOpen,
 }: {
-  item: CaseItem;
+  item: ReturnType<typeof useMessages>["gallery"][number];
   index: number;
   featured?: boolean;
   onOpen: () => void;
 }) {
+  const { ui } = useMessages();
   const reverse = index % 2 === 1;
   const cover = item.views[0];
 
   return (
     <article
-      className={`case-study grid gap-5 border-t border-border pt-8 sm:gap-6 lg:grid-cols-12 lg:items-center lg:gap-10 ${
-        featured ? "lg:pt-10" : ""
+      className={`case-study grid gap-5 border-t border-border pt-8 sm:gap-6 lg:grid-cols-12 lg:items-center lg:gap-10 xl:gap-12 2xl:gap-14 ${
+        featured ? "lg:pt-10 2xl:pt-12" : ""
       }`}
     >
       <div className={`lg:col-span-7 ${reverse ? "lg:order-2" : ""}`}>
@@ -120,28 +133,28 @@ function CaseStudyCard({
           type="button"
           onClick={onOpen}
           className="group focus-ring relative block w-full overflow-hidden text-left"
-          aria-label={`Ver caso: ${item.title}`}
+          aria-label={`${ui.seeCase}: ${item.title}`}
         >
           <div className="grid grid-cols-2 gap-px bg-border">
-            <div className="media-skeleton relative aspect-[4/5] bg-deep sm:aspect-[3/4]">
+            <div className="media-skeleton relative aspect-[4/5] bg-deep sm:aspect-[3/4] xl:aspect-[4/5] 2xl:min-h-[22rem]">
               <SmartImage
                 src={cover.before}
-                alt={`${item.title} — antes`}
+                alt={`${item.title} — ${ui.before.toLowerCase()}`}
                 preset="galleryCard"
                 fill
                 className="object-cover transition duration-500 group-hover:scale-[1.02]"
               />
-              <span className="case-chip">Antes</span>
+              <span className="case-chip">{ui.before}</span>
             </div>
-            <div className="media-skeleton relative aspect-[4/5] bg-deep sm:aspect-[3/4]">
+            <div className="media-skeleton relative aspect-[4/5] bg-deep sm:aspect-[3/4] xl:aspect-[4/5] 2xl:min-h-[22rem]">
               <SmartImage
                 src={cover.after}
-                alt={`${item.title} — después`}
+                alt={`${item.title} — ${ui.after.toLowerCase()}`}
                 preset="galleryCard"
                 fill
                 className="object-cover transition duration-500 group-hover:scale-[1.02]"
               />
-              <span className="case-chip">Después</span>
+              <span className="case-chip">{ui.after}</span>
             </div>
           </div>
         </button>
@@ -149,13 +162,13 @@ function CaseStudyCard({
 
       <div className={`flex flex-col lg:col-span-5 ${reverse ? "lg:order-1 lg:items-end lg:text-right" : ""}`}>
         <p className="type-eyebrow">{item.label}</p>
-        <h3 className="mt-2 font-display text-[clamp(1.6rem,3vw,2.35rem)] leading-tight text-text">
+        <h3 className="mt-2 font-display text-[clamp(1.6rem,3vw,2.5rem)] leading-tight text-text 2xl:text-[2.65rem]">
           {item.title}
         </h3>
         <p className="mt-2 type-body text-text-muted">{item.detail}</p>
         {item.views.length > 1 ? (
           <p className="mt-1 type-small text-text-faint">
-            {item.views.length} vistas documentadas
+            {item.views.length} {ui.viewsDocumented}
           </p>
         ) : null}
         <button
@@ -163,7 +176,7 @@ function CaseStudyCard({
           onClick={onOpen}
           className="btn btn-secondary focus-ring mt-6 w-full sm:w-auto"
         >
-          Ver caso
+          {ui.seeCase}
         </button>
       </div>
     </article>
@@ -176,21 +189,20 @@ function CaseViewer({
   onClose,
   onPrev,
   onNext,
-  onSelect,
 }: {
   index: number;
   reduce: boolean;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
-  onSelect: (i: number) => void;
 }) {
+  const { gallery, ui } = useMessages();
   const item = gallery[index];
   const [mode, setMode] = useState<"slider" | "toggle">("slider");
   const [showing, setShowing] = useState<"before" | "after">("after");
   const [viewIndex, setViewIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(index);
-  const touchStart = useRef<{ x: number; y: number; ignore: boolean } | null>(null);
+  const swipeTouchStart = useRef<{ x: number; y: number } | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   if (index !== prevIndex) {
@@ -208,33 +220,14 @@ function CaseViewer({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[80] flex flex-col bg-deep text-inverse"
+      className="case-viewer fixed inset-0 z-[100] flex h-[100dvh] max-h-[100dvh] flex-col bg-deep text-inverse"
       role="dialog"
       aria-modal="true"
-      aria-label={`${item.title}. Caso ${index + 1} de ${gallery.length}`}
+      aria-label={`${item.title}. ${ui.caseLabel} ${index + 1} ${ui.caseOf} ${gallery.length}`}
       initial={reduce ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={reduce ? undefined : { opacity: 0 }}
       transition={{ duration: 0.28 }}
-      onTouchStart={(e) => {
-        const target = e.target as HTMLElement;
-        const ignore = Boolean(target.closest(".compare-frame"));
-        const t = e.changedTouches[0];
-        touchStart.current = { x: t.clientX, y: t.clientY, ignore };
-      }}
-      onTouchEnd={(e) => {
-        if (!touchStart.current || touchStart.current.ignore) {
-          touchStart.current = null;
-          return;
-        }
-        const t = e.changedTouches[0];
-        const dx = t.clientX - touchStart.current.x;
-        const dy = t.clientY - touchStart.current.y;
-        touchStart.current = null;
-        if (Math.abs(dx) < 56 || Math.abs(dx) < Math.abs(dy)) return;
-        if (dx < 0) onNext();
-        else onPrev();
-      }}
     >
       <div
         className="pointer-events-none absolute inset-0"
@@ -244,25 +237,33 @@ function CaseViewer({
             "radial-gradient(ellipse 80% 58% at 50% 0%, rgba(108, 138, 123, 0.2), transparent 54%), linear-gradient(to bottom, rgba(10, 12, 11, 0.88), rgba(7, 9, 9, 0.96))",
         }}
       />
-      <div className="relative flex h-full flex-col overflow-hidden">
-        <header className="relative z-20 flex shrink-0 items-center justify-between gap-3 border-b border-inverse/16 bg-deep/92 px-4 py-3 backdrop-blur-md sm:px-6 md:border-0 md:bg-transparent md:px-10 md:pt-7 md:pb-2 md:backdrop-blur-none">
-          <div className="min-w-0">
-            <p className="text-[0.7rem] tracking-[0.16em] text-inverse/55 uppercase">
-              Caso {index + 1} de {gallery.length}
+      <div className="case-viewer__shell relative flex h-full min-h-0 flex-col overflow-hidden">
+        <header className="case-viewer__header relative z-20 flex shrink-0 items-center justify-between gap-2 border-b border-inverse/16 bg-deep/92 px-[max(1rem,env(safe-area-inset-left))] pb-2.5 pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md pr-[max(1rem,env(safe-area-inset-right))] sm:gap-3 sm:px-6 sm:pb-3 sm:pt-[max(0.65rem,env(safe-area-inset-top))] md:border-0 md:bg-transparent md:px-10 md:pb-2 md:pt-[max(1.75rem,env(safe-area-inset-top))] md:backdrop-blur-none">
+          <div className="flex min-w-0 flex-1 items-start gap-2.5 sm:gap-4 md:gap-5">
+            <div
+              className="case-viewer__brand shrink-0 pt-0.5"
+              aria-hidden
+            >
+              <BrandLogo on="dark" size={40} className="h-8 w-8 sm:h-10 sm:w-10 md:h-11 md:w-11" />
+            </div>
+            <div className="min-w-0 flex-1 border-l border-inverse/12 pl-2.5 sm:pl-4 md:pl-5">
+            <p className="text-[0.65rem] tracking-[0.14em] text-inverse/55 uppercase sm:text-[0.7rem] sm:tracking-[0.16em]">
+              {ui.caseLabel} {index + 1} {ui.caseOf} {gallery.length}
             </p>
-            <p className="truncate font-display text-2xl leading-[0.98] tracking-[-0.02em] text-inverse sm:text-[2rem] md:text-[2.25rem]">
+            <p className="truncate font-display text-xl leading-[0.98] tracking-[-0.02em] text-inverse sm:text-[2rem] md:text-[2.25rem]">
               {item.title}
             </p>
             <p className="mt-1 truncate text-[0.72rem] tracking-[0.14em] text-inverse/58 uppercase">
               {multiView ? view.label : item.detail}
             </p>
+            </div>
           </div>
           <button
             type="button"
             onClick={onClose}
             ref={closeButtonRef}
             className="focus-ring pointer-events-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-inverse/24 text-inverse/72 transition hover:border-inverse/45 hover:text-inverse md:h-12 md:w-12 md:rounded-none md:border-0"
-            aria-label="Cerrar"
+            aria-label={ui.close}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path
@@ -275,7 +276,7 @@ function CaseViewer({
           </button>
         </header>
 
-        <div className="relative z-20 flex shrink-0 flex-wrap items-center justify-center gap-2 border-b border-inverse/16 bg-deep/88 px-4 py-2.5 backdrop-blur-md sm:px-6 md:justify-start md:gap-5 md:border-0 md:bg-transparent md:px-10 md:py-0 md:backdrop-blur-none">
+        <div className="case-viewer__toolbar relative z-20 flex shrink-0 flex-wrap items-center justify-center gap-1.5 border-b border-inverse/16 bg-deep/88 px-[max(1rem,env(safe-area-inset-left))] py-2 backdrop-blur-md pr-[max(1rem,env(safe-area-inset-right))] sm:gap-2 sm:px-6 sm:py-2.5 md:justify-start md:gap-5 md:border-0 md:bg-transparent md:px-10 md:py-0 md:backdrop-blur-none">
           <button
             type="button"
             className={`focus-ring min-h-10 rounded-full px-4 text-sm transition md:min-h-0 md:rounded-none md:px-0 md:pb-1 md:text-[0.76rem] md:font-medium md:tracking-[0.16em] md:uppercase ${
@@ -285,7 +286,7 @@ function CaseViewer({
             }`}
             onClick={() => setMode("slider")}
           >
-            Comparar
+            {ui.compare}
           </button>
           <button
             type="button"
@@ -296,7 +297,7 @@ function CaseViewer({
             }`}
             onClick={() => setMode("toggle")}
           >
-            Alternar
+            {ui.toggle}
           </button>
           {multiView ? (
             <>
@@ -323,18 +324,18 @@ function CaseViewer({
           ) : null}
         </div>
 
-        <div className="relative z-10 min-h-0 flex-1 overflow-hidden px-3 py-3 sm:px-6 sm:py-5 md:px-10 md:py-8">
+        <div className="case-viewer__stage relative z-10 min-h-0 flex-1">
           <button
             type="button"
             onClick={onPrev}
-            className="focus-ring absolute left-10 top-1/2 z-20 hidden -translate-y-1/2 text-xs tracking-[0.22em] text-inverse/62 uppercase transition hover:text-inverse md:block"
+            className="focus-ring absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 text-xs tracking-[0.22em] text-inverse/62 uppercase transition hover:text-inverse md:left-8 lg:left-10 md:block"
           >
-            ← Anterior
+            ← {ui.previous}
           </button>
           <AnimatePresence mode="wait">
             <motion.div
               key={`${item.id}-${view.label}-${mode}`}
-              className="mx-auto flex h-full w-full max-w-[84rem] items-center justify-center"
+              className="case-viewer__media-wrap"
               initial={reduce ? false : { opacity: 0, scale: 0.985 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={reduce ? undefined : { opacity: 0, scale: 0.99 }}
@@ -344,20 +345,24 @@ function CaseViewer({
                 <CompareSlider
                   beforeSrc={view.before}
                   afterSrc={view.after}
-                  beforeAlt={`${item.title} — ${view.label} — antes`}
-                  afterAlt={`${item.title} — ${view.label} — después`}
-                  className="aspect-[1/2] h-full max-h-full w-full max-w-[min(100%,22rem)] sm:max-w-[min(100%,26rem)] md:max-h-[min(86dvh,960px)] md:max-w-[min(100%,30rem)]"
+                  beforeAlt={`${item.title} — ${view.label} — ${ui.before.toLowerCase()}`}
+                  afterAlt={`${item.title} — ${view.label} — ${ui.after.toLowerCase()}`}
+                  className="case-viewer-compare"
                   largeHandle
+                  imageFit="contain"
+                  imagePreset="viewer"
                 />
               ) : (
                 <ToggleCompare
                   beforeSrc={view.before}
                   afterSrc={view.after}
-                  beforeAlt={`${item.title} — ${view.label} — antes`}
-                  afterAlt={`${item.title} — ${view.label} — después`}
-                  className="aspect-[1/2] h-full max-h-full w-full max-w-[min(100%,22rem)] sm:max-w-[min(100%,26rem)] md:max-h-[min(86dvh,960px)] md:max-w-[min(100%,30rem)]"
+                  beforeAlt={`${item.title} — ${view.label} — ${ui.before.toLowerCase()}`}
+                  afterAlt={`${item.title} — ${view.label} — ${ui.after.toLowerCase()}`}
+                  className="case-viewer-compare"
                   showing={showing}
                   onToggle={setShowing}
+                  imageFit="contain"
+                  imagePreset="viewer"
                 />
               )}
             </motion.div>
@@ -365,38 +370,38 @@ function CaseViewer({
           <button
             type="button"
             onClick={onNext}
-            className="focus-ring absolute right-10 top-1/2 z-20 hidden -translate-y-1/2 text-xs tracking-[0.22em] text-inverse/62 uppercase transition hover:text-inverse md:block"
+            className="focus-ring absolute right-4 top-1/2 z-20 hidden -translate-y-1/2 text-xs tracking-[0.22em] text-inverse/62 uppercase transition hover:text-inverse md:right-8 lg:right-10 md:block"
           >
-            Siguiente →
+            {ui.next} →
           </button>
         </div>
 
-        <footer className="relative z-20 shrink-0 border-t border-inverse/16 bg-deep/92 px-4 py-3 backdrop-blur-md sm:px-6 md:hidden">
-          <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
-            <button type="button" onClick={onPrev} className="btn btn-secondary focus-ring">
-              Anterior
-            </button>
-            <div className="hidden items-center gap-1.5 sm:flex">
-              {gallery.map((g, i) => (
-                <button
-                  key={g.id}
-                  type="button"
-                  aria-label={`Ir a ${g.label}`}
-                  aria-current={i === index}
-                  onClick={() => onSelect(i)}
-                  className={`focus-ring h-2.5 rounded-full transition ${
-                    i === index ? "w-6 bg-accent" : "w-2.5 bg-border-strong"
-                  }`}
-                />
-              ))}
-            </div>
-            <button type="button" onClick={onNext} className="btn btn-secondary focus-ring">
-              Siguiente
-            </button>
+        <footer
+          className="case-viewer__footer case-viewer__swipe-zone relative z-20 shrink-0 md:hidden"
+          onTouchStart={(e) => {
+            const t = e.changedTouches[0];
+            swipeTouchStart.current = { x: t.clientX, y: t.clientY };
+          }}
+          onTouchEnd={(e) => {
+            if (!swipeTouchStart.current) return;
+            const t = e.changedTouches[0];
+            const dx = t.clientX - swipeTouchStart.current.x;
+            const dy = t.clientY - swipeTouchStart.current.y;
+            swipeTouchStart.current = null;
+            if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
+            if (dx < 0) onNext();
+            else onPrev();
+          }}
+        >
+          <div className="case-viewer__swipe-row">
+            <span className="case-viewer__swipe-chevs case-viewer__swipe-chevs--left" aria-hidden>
+              ‹‹‹
+            </span>
+            <p className="case-viewer__swipe-hint">{ui.swipeCases}</p>
+            <span className="case-viewer__swipe-chevs case-viewer__swipe-chevs--right" aria-hidden>
+              ›››
+            </span>
           </div>
-          <p className="mt-2 text-center type-small text-text-faint sm:hidden">
-            Deslizá horizontalmente para cambiar de caso
-          </p>
         </footer>
       </div>
     </motion.div>

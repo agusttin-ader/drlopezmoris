@@ -10,6 +10,8 @@ type BrandLogoProps = {
 
 /** Isologotipo con contraste según superficie (oscuro = blanco, claro = negro). */
 export function BrandLogo({ on, size = 32, className = "" }: BrandLogoProps) {
+  const variantClass = on === "dark" ? "brand-mark--on-dark" : "brand-mark--light";
+
   return (
     <SmartImage
       src={site.logo}
@@ -17,7 +19,7 @@ export function BrandLogo({ on, size = 32, className = "" }: BrandLogoProps) {
       preset="logo"
       width={size}
       height={size}
-      className={`brand-mark brand-mark--${on} object-contain ${className}`.trim()}
+      className={`brand-mark ${variantClass} object-contain ${className}`.trim()}
       aria-hidden
     />
   );
