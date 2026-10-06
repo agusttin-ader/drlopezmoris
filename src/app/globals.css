@@ -1997,7 +1997,7 @@ html.locale-text-swap :where(header, main.site-main, footer) :where(
     radial-gradient(ellipse 55% 45% at 20% 30%, rgba(79, 106, 94, 0.45), transparent 60%),
     radial-gradient(ellipse 50% 40% at 80% 70%, rgba(120, 148, 132, 0.28), transparent 55%),
     radial-gradient(ellipse 40% 35% at 50% 100%, rgba(47, 62, 54, 0.5), transparent 50%);
-  animation: coming-soon-aurora 14s ease-in-out infinite alternate;
+  animation: coming-soon-aurora 32s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
   pointer-events: none;
 }
 
@@ -2013,7 +2013,8 @@ html.locale-text-swap :where(header, main.site-main, footer) :where(
 .coming-soon__orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(64px);
+  filter: blur(80px);
+  will-change: transform;
   pointer-events: none;
 }
 
@@ -2047,12 +2048,12 @@ html.locale-text-swap :where(header, main.site-main, footer) :where(
     90deg,
     transparent,
     rgba(247, 244, 239, 0.15) 35%,
-    rgba(247, 244, 239, 0.55) 50%,
+    rgba(247, 244, 239, 0.38) 50%,
     rgba(247, 244, 239, 0.15) 65%,
     transparent
   );
   background-size: 200% 100%;
-  animation: coming-soon-shimmer 2.8s ease-in-out infinite;
+  animation: coming-soon-shimmer 6.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 @keyframes coming-soon-aurora {
@@ -2060,7 +2061,7 @@ html.locale-text-swap :where(header, main.site-main, footer) :where(
     transform: translate3d(0, 0, 0) scale(1);
   }
   100% {
-    transform: translate3d(2%, -3%, 0) scale(1.04);
+    transform: translate3d(1%, -1.5%, 0) scale(1.015);
   }
 }
 
