@@ -19,6 +19,15 @@ export const site = {
     "Rhinology and nasal surgery in Buenos Aires. CEMIC · Palermo office · License MN 133953.",
 } as const;
 
+export const comingSoon = {
+  eyebrow: "New website underway",
+  title: "Coming soon",
+  subtitle:
+    "We're building a new experience to serve you better in rhinology and nasal surgery.",
+  hint: "Thank you for your patience.",
+  ctaWhatsApp: "Message on WhatsApp",
+} as const;
+
 export const nav = [
   { href: "#servicios", label: "Services" },
   { href: "#sobre-mi", label: "About" },

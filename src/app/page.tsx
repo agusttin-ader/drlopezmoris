@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { About } from "@/components/About";
+import { ComingSoon } from "@/components/ComingSoon";
 import { Diplomas } from "@/components/Diplomas";
 import { Contact } from "@/components/Contact";
 import { FAQ } from "@/components/FAQ";
@@ -12,8 +14,28 @@ import { Testimonials } from "@/components/Testimonials";
 import { Timeline } from "@/components/Timeline";
 import { TrustStrip } from "@/components/TrustStrip";
 import { about, locations, site } from "@/lib/content";
+import { isComingSoon } from "@/lib/siteMode";
+
+export async function generateMetadata(): Promise<Metadata> {
+  if (!isComingSoon()) return {};
+
+  return {
+    title: "Próximamente",
+    description:
+      "Nuevo sitio del Dr. Carlos López Moris en preparación. Rinología y cirugía nasal en Buenos Aires.",
+    robots: { index: false, follow: false },
+    openGraph: {
+      title: `Próximamente · ${site.shortName}`,
+      description: "Estamos trabajando en una experiencia nueva. Volvé pronto.",
+    },
+  };
+}
 
 export default function Home() {
+  if (isComingSoon()) {
+    return <ComingSoon />;
+  }
+
   const primaryLocation = locations[1] ?? locations[0];
   const hospital = locations[0];
 

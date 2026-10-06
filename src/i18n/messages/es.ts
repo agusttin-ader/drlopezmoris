@@ -19,6 +19,15 @@ export const site = {
     "Rinología y cirugía nasal en Buenos Aires. CEMIC · consultorio en Palermo · MN 133953.",
 } as const;
 
+export const comingSoon = {
+  eyebrow: "Nuevo sitio en preparación",
+  title: "Próximamente",
+  subtitle:
+    "Estamos trabajando en una experiencia nueva para acompañarte en rinología y cirugía nasal.",
+  hint: "Gracias por tu paciencia.",
+  ctaWhatsApp: "Escribir por WhatsApp",
+} as const;
+
 export const nav = [
   { href: "#servicios", label: "Servicios" },
   { href: "#sobre-mi", label: "Sobre mí" },

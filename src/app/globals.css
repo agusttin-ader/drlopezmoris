@@ -1985,3 +1985,97 @@ html.locale-text-swap :where(header, main.site-main, footer) :where(
 .contact-form__close:hover {
   color: var(--text);
 }
+
+/* -------------------------------------------------------------------------- */
+/* Coming soon (SITE_MODE=coming-soon)                                        */
+/* -------------------------------------------------------------------------- */
+
+.coming-soon__aurora {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse 55% 45% at 20% 30%, rgba(79, 106, 94, 0.45), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(120, 148, 132, 0.28), transparent 55%),
+    radial-gradient(ellipse 40% 35% at 50% 100%, rgba(47, 62, 54, 0.5), transparent 50%);
+  animation: coming-soon-aurora 14s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.coming-soon__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.coming-soon__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  pointer-events: none;
+}
+
+.coming-soon__orb--a {
+  top: 12%;
+  left: 8%;
+  width: min(42vw, 18rem);
+  height: min(42vw, 18rem);
+  background: rgba(79, 106, 94, 0.35);
+}
+
+.coming-soon__orb--b {
+  right: 5%;
+  bottom: 18%;
+  width: min(48vw, 22rem);
+  height: min(48vw, 22rem);
+  background: rgba(180, 198, 186, 0.18);
+}
+
+.coming-soon__eyebrow-mark {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  margin-right: 0.65rem;
+  vertical-align: middle;
+  background: linear-gradient(90deg, transparent, rgba(247, 244, 239, 0.65));
+}
+
+.coming-soon__shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(247, 244, 239, 0.15) 35%,
+    rgba(247, 244, 239, 0.55) 50%,
+    rgba(247, 244, 239, 0.15) 65%,
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: coming-soon-shimmer 2.8s ease-in-out infinite;
+}
+
+@keyframes coming-soon-aurora {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(2%, -3%, 0) scale(1.04);
+  }
+}
+
+@keyframes coming-soon-shimmer {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coming-soon__aurora,
+  .coming-soon__shimmer {
+    animation: none;
+  }
+}
