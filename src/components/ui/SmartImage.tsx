@@ -24,8 +24,7 @@ const qualityForPreset: Record<Preset, number> = {
 };
 
 /**
- * next/image con blur + sizes por preset.
- * Las URLs apuntan a /public (unoptimized): sin /_next/image ni Vercel Image Optimization.
+ * next/image con blur, sizes y optimización (AVIF/WebP + ancho según viewport).
  */
 export function SmartImage({
   src,
@@ -46,11 +45,11 @@ export function SmartImage({
       alt={alt}
       sizes={imageSizes[preset]}
       quality={resolvedQuality}
-      unoptimized
       placeholder={blur ? "blur" : "empty"}
       blurDataURL={blur}
       priority={priority}
       loading={priority ? undefined : loading ?? "lazy"}
+      decoding="async"
       className={className}
       {...rest}
     />

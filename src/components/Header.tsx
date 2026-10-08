@@ -86,6 +86,10 @@ export function Header() {
             : "border-b border-transparent bg-transparent text-inverse"
       }`}
     >
+      <div
+        aria-hidden
+        className={`header-scrim ${solid ? "opacity-0" : "opacity-100"}`}
+      />
       <Container className="relative z-10 flex h-[var(--header-h)] items-center justify-between gap-2 sm:gap-3">
         <a
           href="#inicio"

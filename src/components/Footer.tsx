@@ -87,7 +87,6 @@ export function Footer() {
                 src="/images/logo-dev/logo-dev.webp"
                 alt=""
                 fill
-                unoptimized
                 sizes="32px"
                 className="object-contain object-left drop-shadow-[0_0_1.5px_rgba(255,255,255,0.85)]"
               />

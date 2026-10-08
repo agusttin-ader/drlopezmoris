@@ -27,7 +27,7 @@ npm run build
 npm start
 ```
 
-Las imágenes se sirven estáticas desde `public/images` (`images.unoptimized`). No dependen del Image Optimization de Vercel (`/_next/image`), así que el deploy funciona igual en cualquier host.
+Las imágenes en `public/images` se optimizan con `next/image` (AVIF/WebP y ancho según `sizes`). Los masters en JPEG/PNG no se tocan en el repo.
 
 ## Contenido
 

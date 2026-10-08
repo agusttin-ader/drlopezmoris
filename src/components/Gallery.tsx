@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useMessages } from "@/i18n/LocaleProvider";
@@ -13,9 +13,21 @@ import { SectionHeading } from "./ui/SectionHeading";
 import { BrandLogo } from "./BrandLogo";
 import { SmartImage } from "./ui/SmartImage";
 
+const PREVIEW_COUNT = 3;
+
 export function Gallery() {
   const { gallery, galleryIntro, hero } = useMessages();
-  const [active, setActive] = useState<number | null>(null);
+  const [active, setActive] = useState<{ index: number; view: number } | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const listRef = useRef<HTMLDivElement>(null);
+  const scrollToListEndRef = useRef(false);
+  const canExpand = gallery.length > PREVIEW_COUNT;
+  const visibleCases = expanded || !canExpand ? gallery : gallery.slice(0, PREVIEW_COUNT);
+
+  const toggleExpanded = () => {
+    if (expanded) scrollToListEndRef.current = true;
+    setExpanded(!expanded);
+  };
   const reduce = useReducedMotion();
   const { openBooking } = useBooking();
   const portalReady = useSyncExternalStore(
@@ -30,21 +42,19 @@ export function Gallery() {
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActive(null);
-      const target = e.target as HTMLElement | null;
-      if (target?.closest?.('[role="slider"]')) return;
-      if (e.key === "ArrowRight") {
-        setActive((i) => (i === null ? i : (i + 1) % gallery.length));
-      }
-      if (e.key === "ArrowLeft") {
-        setActive((i) => (i === null ? i : (i - 1 + gallery.length) % gallery.length));
-      }
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
     };
-  }, [active, gallery.length]);
+  }, [active]);
+
+  useLayoutEffect(() => {
+    if (expanded || !scrollToListEndRef.current) return;
+    scrollToListEndRef.current = false;
+    listRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "end" });
+  }, [expanded, reduce]);
 
   return (
     <section id="galeria" className="section">
@@ -62,18 +72,56 @@ export function Gallery() {
           </div>
         </Reveal>
 
-        <div className="mt-10 space-y-8 sm:mt-12 sm:space-y-10 lg:space-y-12">
-          {gallery.map((item, index) => (
-            <Reveal key={item.id} delay={Math.min(index * 0.04, 0.2)} variant={index === 0 ? "soft" : "up"}>
+        <div
+          ref={listRef}
+          className="gallery-list mt-10 space-y-8 sm:mt-12 sm:space-y-10 lg:space-y-12"
+        >
+          {visibleCases.map((item, index) => (
+            <Reveal
+              key={item.id}
+              delay={index < PREVIEW_COUNT ? Math.min(index * 0.04, 0.2) : 0}
+              variant={index === 0 ? "soft" : "up"}
+            >
               <CaseStudyCard
                 item={item}
                 index={index}
                 featured={index === 0}
-                onOpen={() => setActive(index)}
+                onOpen={(view = 0) => setActive({ index, view })}
               />
             </Reveal>
           ))}
         </div>
+
+        {canExpand ? (
+          <div className="credentials-more mt-10 sm:mt-12">
+            <button
+              type="button"
+              className="credentials-more__btn gallery-more__btn focus-ring"
+              aria-expanded={expanded}
+              onClick={toggleExpanded}
+            >
+              {expanded
+                ? galleryIntro.showLess
+                : `${galleryIntro.showMore} (${gallery.length - PREVIEW_COUNT})`}
+              <svg
+                className={`gallery-more__chevron ${expanded ? "is-open" : ""}`}
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="M6 9.5L12 15L18 9.5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        ) : null}
 
         <Reveal delay={0.06}>
           <div className="mt-12 flex flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
@@ -90,13 +138,17 @@ export function Gallery() {
             <AnimatePresence>
               {active !== null ? (
                 <CaseViewer
-                  index={active}
+                  index={active.index}
+                  startView={active.view}
                   reduce={!!reduce}
                   onClose={() => setActive(null)}
-                  onPrev={() =>
-                    setActive((active - 1 + gallery.length) % gallery.length)
+                  onPrevCase={() => {
+                    const i = (active.index - 1 + gallery.length) % gallery.length;
+                    setActive({ index: i, view: gallery[i].views.length - 1 });
+                  }}
+                  onNextCase={() =>
+                    setActive({ index: (active.index + 1) % gallery.length, view: 0 })
                   }
-                  onNext={() => setActive((active + 1) % gallery.length)}
                 />
               ) : null}
             </AnimatePresence>,
@@ -116,7 +168,7 @@ function CaseStudyCard({
   item: ReturnType<typeof useMessages>["gallery"][number];
   index: number;
   featured?: boolean;
-  onOpen: () => void;
+  onOpen: (view?: number) => void;
 }) {
   const { ui } = useMessages();
   const reverse = index % 2 === 1;
@@ -131,7 +183,7 @@ function CaseStudyCard({
       <div className={`lg:col-span-7 ${reverse ? "lg:order-2" : ""}`}>
         <button
           type="button"
-          onClick={onOpen}
+          onClick={() => onOpen()}
           className="group focus-ring relative block w-full overflow-hidden text-left"
           aria-label={`${ui.seeCase}: ${item.title}`}
         >
@@ -167,13 +219,31 @@ function CaseStudyCard({
         </h3>
         <p className="mt-2 type-body text-text-muted">{item.detail}</p>
         {item.views.length > 1 ? (
-          <p className="mt-1 type-small text-text-faint">
-            {item.views.length} {ui.viewsDocumented}
-          </p>
+          <>
+            <p className="mt-1 type-small text-text-faint">
+              {item.views.length} {ui.viewsDocumented}
+            </p>
+            <ul
+              className={`case-angles mt-3 ${reverse ? "lg:justify-end" : ""}`}
+              aria-label={ui.angles}
+            >
+              {item.views.map((v, i) => (
+                <li key={v.label} className="case-angles__item">
+                  <button
+                    type="button"
+                    className="case-angles__link focus-ring"
+                    onClick={() => onOpen(i)}
+                  >
+                    {v.label.replace(/^Vista de /i, "")}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
         ) : null}
         <button
           type="button"
-          onClick={onOpen}
+          onClick={() => onOpen()}
           className="btn btn-secondary focus-ring mt-6 w-full sm:w-auto"
         >
           {ui.seeCase}
@@ -185,42 +255,64 @@ function CaseStudyCard({
 
 function CaseViewer({
   index,
+  startView,
   reduce,
   onClose,
-  onPrev,
-  onNext,
+  onPrevCase,
+  onNextCase,
 }: {
   index: number;
+  startView: number;
   reduce: boolean;
   onClose: () => void;
-  onPrev: () => void;
-  onNext: () => void;
+  onPrevCase: () => void;
+  onNextCase: () => void;
 }) {
   const { gallery, ui } = useMessages();
   const item = gallery[index];
   const [mode, setMode] = useState<"slider" | "toggle">("slider");
   const [showing, setShowing] = useState<"before" | "after">("after");
-  const [viewIndex, setViewIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(index);
+  const [viewIndex, setViewIndex] = useState(startView);
+  const [prevKey, setPrevKey] = useState(`${index}:${startView}`);
   const swipeTouchStart = useRef<{ x: number; y: number } | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-
-  if (index !== prevIndex) {
-    setPrevIndex(index);
+  const key = `${index}:${startView}`;
+  if (key !== prevKey) {
+    setPrevKey(key);
     setShowing("after");
-    setViewIndex(0);
+    setViewIndex(startView);
   }
 
   useEffect(() => {
     closeButtonRef.current?.focus();
   }, [index]);
 
-  const view = item.views[Math.min(viewIndex, item.views.length - 1)];
-  const multiView = item.views.length > 1;
+  const viewCount = item.views.length;
+  const safeView = Math.min(viewIndex, viewCount - 1);
+  const view = item.views[safeView];
+  const multiView = viewCount > 1;
+
+  const selectView = (i: number) => {
+    setViewIndex(i);
+    setShowing("after");
+  };
+  const goNext = () => (safeView < viewCount - 1 ? selectView(safeView + 1) : onNextCase());
+  const goPrev = () => (safeView > 0 ? selectView(safeView - 1) : onPrevCase());
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target?.closest?.('[role="slider"]')) return;
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   return (
     <motion.div
-      className="case-viewer fixed inset-0 z-[100] flex h-[100dvh] max-h-[100dvh] flex-col bg-deep text-inverse"
+      className={`case-viewer fixed inset-0 z-[100] flex h-[100dvh] max-h-[100dvh] flex-col bg-deep text-inverse`}
       role="dialog"
       aria-modal="true"
       aria-label={`${item.title}. ${ui.caseLabel} ${index + 1} ${ui.caseOf} ${gallery.length}`}
@@ -254,7 +346,17 @@ function CaseViewer({
               {item.title}
             </p>
             <p className="mt-1 truncate text-[0.72rem] tracking-[0.14em] text-inverse/58 uppercase">
-              {multiView ? view.label : item.detail}
+              {multiView ? (
+                <>
+                  {view.label.replace(/^Vista de /i, "")}
+                  <span className="text-inverse/40">
+                    {" · "}
+                    {safeView + 1} / {viewCount}
+                  </span>
+                </>
+              ) : (
+                item.detail
+              )}
             </p>
             </div>
           </div>
@@ -299,35 +401,12 @@ function CaseViewer({
           >
             {ui.toggle}
           </button>
-          {multiView ? (
-            <>
-              <span className="mx-1 hidden h-4 w-px bg-inverse/20 sm:block md:mx-2 md:h-3" aria-hidden />
-              {item.views.map((v, i) => (
-                <button
-                  key={v.label}
-                  type="button"
-                  className={`focus-ring min-h-10 rounded-full px-4 text-sm transition md:min-h-0 md:rounded-none md:px-0 md:pb-1 md:text-[0.72rem] md:tracking-[0.14em] md:uppercase ${
-                    i === viewIndex
-                      ? "bg-accent text-inverse md:bg-transparent md:text-inverse md:[text-decoration:underline] md:[text-underline-offset:0.42rem]"
-                      : "text-inverse/70 md:text-inverse/62 md:hover:text-inverse"
-                  }`}
-                  aria-current={i === viewIndex}
-                  onClick={() => {
-                    setViewIndex(i);
-                    setShowing("after");
-                  }}
-                >
-                  {v.label.replace(/^Vista de /i, "")}
-                </button>
-              ))}
-            </>
-          ) : null}
         </div>
 
         <div className="case-viewer__stage relative z-10 min-h-0 flex-1">
           <button
             type="button"
-            onClick={onPrev}
+            onClick={goPrev}
             className="focus-ring absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 text-xs tracking-[0.22em] text-inverse/62 uppercase transition hover:text-inverse md:left-8 lg:left-10 md:block"
           >
             ← {ui.previous}
@@ -369,7 +448,7 @@ function CaseViewer({
           </AnimatePresence>
           <button
             type="button"
-            onClick={onNext}
+            onClick={goNext}
             className="focus-ring absolute right-4 top-1/2 z-20 hidden -translate-y-1/2 text-xs tracking-[0.22em] text-inverse/62 uppercase transition hover:text-inverse md:right-8 lg:right-10 md:block"
           >
             {ui.next} →
@@ -389,15 +468,17 @@ function CaseViewer({
             const dy = t.clientY - swipeTouchStart.current.y;
             swipeTouchStart.current = null;
             if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
-            if (dx < 0) onNext();
-            else onPrev();
+            if (dx < 0) goNext();
+            else goPrev();
           }}
         >
           <div className="case-viewer__swipe-row">
             <span className="case-viewer__swipe-chevs case-viewer__swipe-chevs--left" aria-hidden>
               ‹‹‹
             </span>
-            <p className="case-viewer__swipe-hint">{ui.swipeCases}</p>
+            <p className="case-viewer__swipe-hint">
+              {multiView ? ui.swipeAngles : ui.swipeCases}
+            </p>
             <span className="case-viewer__swipe-chevs case-viewer__swipe-chevs--right" aria-hidden>
               ›››
             </span>

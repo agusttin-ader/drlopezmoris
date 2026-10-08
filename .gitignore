@@ -20,6 +20,9 @@
 # production
 /build
 
+# Originales compuestos (antes|después); en prod solo van los pares cortados en /ba
+public/images/ba/caso[0-9]/
+
 # misc
 .DS_Store
 *.pem

@@ -6,9 +6,11 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import type { Locale } from "@/i18n/config";
 import styles from "./LanguageSwitcher.module.css";
 
-const OPTIONS: { id: Locale; label: "ES" | "EN" }[] = [
+const OPTIONS: { id: Locale; label: string }[] = [
   { id: "es", label: "ES" },
   { id: "en", label: "EN" },
+  { id: "pt", label: "PT" },
+  { id: "ru", label: "RU" },
 ];
 
 const underlineEase = [0.25, 0.8, 0.35, 1] as const;

@@ -52,12 +52,11 @@ export function Hero() {
             {hero.eyebrow}
           </motion.p>
 
-          <h1 className="sr-only">{site.name}</h1>
-          <div className="mt-3 max-w-3xl sm:mt-4 2xl:max-w-4xl" aria-hidden>
+          <h1 className="mt-3 max-w-3xl sm:mt-4 2xl:max-w-4xl">
             {hero.brandLines.map((line, i) => (
-              <motion.p
+              <motion.span
                 key={line}
-                className="hero-brand font-display text-[clamp(2.15rem,10.5vw,6.25rem)] leading-[0.96] tracking-[-0.03em]"
+                className="hero-brand block font-display text-[clamp(2.15rem,10.5vw,6.25rem)] leading-[0.96] tracking-[-0.03em]"
                 initial={reduce ? false : { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -67,18 +66,17 @@ export function Hero() {
                 }}
               >
                 {line}
-              </motion.p>
+              </motion.span>
             ))}
-          </div>
-
-          <motion.p
-            className="hero-headline mt-4 max-w-[22ch] font-display text-[clamp(1.05rem,3.4vw,2rem)] leading-[1.28] tracking-[-0.01em] sm:mt-5 2xl:max-w-[26ch]"
-            initial={reduce ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.36, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {hero.headline}
-          </motion.p>
+            <motion.span
+              className="hero-headline mt-4 block max-w-[22ch] font-display text-[clamp(1.05rem,3.4vw,2rem)] leading-[1.28] tracking-[-0.01em] sm:mt-5 2xl:max-w-[26ch]"
+              initial={reduce ? false : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.36, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {hero.headline}
+            </motion.span>
+          </h1>
 
           <motion.p
             className="hero-support mt-3 max-w-md text-[0.98rem] leading-relaxed sm:mt-4 sm:max-w-lg sm:text-[1.05rem] xl:max-w-xl"

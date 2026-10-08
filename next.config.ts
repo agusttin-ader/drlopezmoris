@@ -1,12 +1,24 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+      },
+    ];
+  },
   images: {
-    // Sirve archivos estáticos de /public sin /_next/image.
-    // Host-agnóstico (Vercel, Netlify, Node, static): no depende del Image Optimization de Vercel.
-    unoptimized: true,
-    // Valores usados por SmartImage / imagePresets (Next valida quality aunque esté unoptimized).
-    qualities: [72, 75, 78, 80, 82, 85],
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [32, 48, 64, 96, 128, 256, 384, 512],
+    minimumCacheTTL: 60 * 60 * 24 * 365,
+    qualities: [76, 80, 84, 88],
   },
   poweredByHeader: false,
 };

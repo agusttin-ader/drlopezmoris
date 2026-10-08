@@ -3,7 +3,7 @@ export const site = {
   shortName: "Dr. López Moris",
   title: "Médico otorrinolaringólogo · Especialista en rinología",
   description:
-    "Otorrinolaringólogo en Buenos Aires: rinología, rinoplastia funcional y estética, y cirugía nasal. Consulta en Hospital Universitario CEMIC y consultorio en Palermo.",
+    "Otorrinolaringólogo especialista en rinología y rinoplastia en Buenos Aires. Cirugía nasal funcional y estética, respiración y reoperaciones. Turnos en CEMIC y consultorio en Palermo. MN 133953.",
   url: "https://drlopezmoris.com",
   phoneDisplay: "+54 9 11 7200-3461",
   phoneHref: "tel:+5491172003461",
@@ -11,21 +11,14 @@ export const site = {
   email: "contacto@drlopezmoris.com",
   instagram: "https://www.instagram.com/dr.lopezmoris.rinologia",
   linkedin: "https://www.linkedin.com/in/carlos-b-l%C3%B3pez-moris-225a0655/",
+  googleReviews:
+    "https://www.google.com/search?q=lopez+moris#lrd=0x95bccb74d8690f7f:0x9b1acf86bfc2d001,1,,,,",
   matricula: "MN 133953",
   location: "Buenos Aires, Argentina",
   logo: "/images/iso-moris.png",
   ogImage: "/images/banner1.jpg",
   footerBlurb:
     "Rinología y cirugía nasal en Buenos Aires. CEMIC · consultorio en Palermo · MN 133953.",
-} as const;
-
-export const comingSoon = {
-  eyebrow: "Nuevo sitio en preparación",
-  title: "Próximamente",
-  subtitle:
-    "Estamos trabajando en una experiencia nueva para acompañarte en rinología y cirugía nasal.",
-  hint: "Gracias por tu paciencia.",
-  ctaWhatsApp: "Escribir por WhatsApp",
 } as const;
 
 export const nav = [
@@ -133,9 +126,10 @@ export const services = [
 ] as const;
 
 export const timelineIntro = {
-  eyebrow: "Formación",
+  eyebrow: "Trayectoria",
   title: "De dónde vengo.",
-  support: "Hitos académicos y clínicos que respaldan el trabajo de hoy.",
+  support:
+    "Formación, docencia y práctica clínica en instituciones públicas y privadas.",
   footer: "Los diplomas de cada etapa están más abajo.",
   diplomasLink: "Ver diplomas →",
 } as const;
@@ -147,9 +141,44 @@ export const timeline = [
     place: "Universidad Nacional de Tucumán",
   },
   {
-    year: "2012",
-    title: "Rinología y cirugía facial",
-    place: "Universidad Autónoma de México",
+    year: "2010–2014",
+    title: "Residencia en otorrinolaringología",
+    place: "Hospital General de Agudos José María Ramos Mejía",
+  },
+  {
+    year: "2011–2015",
+    title: "Profesor del departamento de ORL",
+    place: "Facultad de Medicina, Universidad de Buenos Aires",
+  },
+  {
+    year: "2012–2015",
+    title: "Otorrinolaringólogo universitario",
+    place: "Universidad de Buenos Aires",
+  },
+  {
+    year: "2013",
+    title: "Observación en rinología, laringología y cirugía de base de cráneo",
+    place: "Hospital Clínic de Barcelona",
+  },
+  {
+    year: "2014–2015",
+    title: "Jefe de residentes",
+    place: "Hospital Ramos Mejía",
+  },
+  {
+    year: "2015",
+    title: "Área de Rinología",
+    place: "CEMIC",
+  },
+  {
+    year: "2015",
+    title: "Profesor adjunto de otorrinolaringología",
+    place: "CEMIC",
+  },
+  {
+    year: "2015–2023",
+    title: "Consultor externo ORL y base de cráneo",
+    place: "Fleni",
   },
   {
     year: "2016",
@@ -157,9 +186,29 @@ export const timeline = [
     place: "Universidad de Buenos Aires",
   },
   {
+    year: "2019",
+    title: "Doctorado en medicina (en curso)",
+    place: "Instituto Universitario CEMIC",
+  },
+  {
+    year: "2020",
+    title: "Miembro de la comisión directiva",
+    place: "Federación Argentina de Sociedades de Otorrinolaringología",
+  },
+  {
+    year: "2020",
+    title: "Miembro de la comisión directiva",
+    place: "Club ORL",
+  },
+  {
     year: "2022",
     title: "Rhinoplasty Full Immersion Experience",
     place: "Rinoplastia de Buenos Aires",
+  },
+  {
+    year: "2022–2023",
+    title: "Rinología y cirugía facial",
+    place: "Universidad Autónoma de México",
   },
   {
     year: "2023",
@@ -294,6 +343,8 @@ export const galleryIntro = {
     "Fotos clínicas de pacientes que autorizaron su uso. Cada caso tuvo su propio plan; no son “resultados garantizados”.",
   aside: "Con consentimiento · uso médico-educativo",
   cta: "Si querés ver si tu caso entra en lo que hago, pedí una consulta.",
+  showMore: "Ver más casos",
+  showLess: "Ver menos",
 } as const;
 
 /** Un ángulo fotográfico dentro de un caso clínico. */
@@ -312,8 +363,225 @@ export const gallery: {
   views: GalleryView[];
 }[] = [
   {
-    id: "rinoplastia-01",
+    id: "rinoplastia-07",
     label: "Caso 01",
+    title: "Rinoplastia",
+    detail: "Frente, perfiles, tres cuartos, basal y superior",
+    views: [
+      {
+        label: "Frente",
+        before: "/images/ba/caso08-frente-antes.jpg",
+        after: "/images/ba/caso08-frente-despues.jpg",
+      },
+      {
+        label: "Frente sonriendo",
+        before: "/images/ba/caso08-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso08-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil derecho",
+        before: "/images/ba/caso08-perfil-der-antes.jpg",
+        after: "/images/ba/caso08-perfil-der-despues.jpg",
+      },
+      {
+        label: "Perfil derecho sonriendo",
+        before: "/images/ba/caso08-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso08-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo sonriendo",
+        before: "/images/ba/caso08-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso08-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Tres cuartos derecho",
+        before: "/images/ba/caso08-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso08-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Tres cuartos izquierdo",
+        before: "/images/ba/caso08-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso08-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Basal",
+        before: "/images/ba/caso08-basal-antes.jpg",
+        after: "/images/ba/caso08-basal-despues.jpg",
+      },
+      {
+        label: "Superior",
+        before: "/images/ba/caso08-superior-antes.jpg",
+        after: "/images/ba/caso08-superior-despues.jpg",
+      },
+    ],
+  },
+  {
+    id: "rinoplastia-08",
+    label: "Caso 02",
+    title: "Rinoplastia",
+    detail: "Frente, perfiles, tres cuartos, basal y superior",
+    views: [
+      {
+        label: "Frente",
+        before: "/images/ba/caso2-frente-antes.jpg",
+        after: "/images/ba/caso2-frente-despues.jpg",
+      },
+      {
+        label: "Frente sonriendo",
+        before: "/images/ba/caso2-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso2-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil derecho",
+        before: "/images/ba/caso2-perfil-der-antes.jpg",
+        after: "/images/ba/caso2-perfil-der-despues.jpg",
+      },
+      {
+        label: "Perfil derecho sonriendo",
+        before: "/images/ba/caso2-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso2-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo",
+        before: "/images/ba/caso2-perfil-izq-antes.jpg",
+        after: "/images/ba/caso2-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo sonriendo",
+        before: "/images/ba/caso2-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso2-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Tres cuartos derecho",
+        before: "/images/ba/caso2-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso2-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Tres cuartos izquierdo",
+        before: "/images/ba/caso2-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso2-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Basal",
+        before: "/images/ba/caso2-basal-antes.jpg",
+        after: "/images/ba/caso2-basal-despues.jpg",
+      },
+      {
+        label: "Superior",
+        before: "/images/ba/caso2-superior-antes.jpg",
+        after: "/images/ba/caso2-superior-despues.jpg",
+      },
+    ],
+  },
+  {
+    id: "rinoplastia-caso-03",
+    label: "Caso 03",
+    title: "Rinoplastia",
+    detail: "Frente, perfiles, tres cuartos, basal y superior",
+    views: [
+      {
+        label: "Frente",
+        before: "/images/ba/caso3-frente-antes.jpg",
+        after: "/images/ba/caso3-frente-despues.jpg",
+      },
+      {
+        label: "Perfil derecho",
+        before: "/images/ba/caso3-perfil-der-antes.jpg",
+        after: "/images/ba/caso3-perfil-der-despues.jpg",
+      },
+      {
+        label: "Perfil derecho sonriendo",
+        before: "/images/ba/caso3-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso3-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo",
+        before: "/images/ba/caso3-perfil-izq-antes.jpg",
+        after: "/images/ba/caso3-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo sonriendo",
+        before: "/images/ba/caso3-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso3-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Tres cuartos derecho",
+        before: "/images/ba/caso3-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso3-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Tres cuartos izquierdo",
+        before: "/images/ba/caso3-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso3-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Basal",
+        before: "/images/ba/caso3-basal-antes.jpg",
+        after: "/images/ba/caso3-basal-despues.jpg",
+      },
+      {
+        label: "Superior",
+        before: "/images/ba/caso3-superior-antes.jpg",
+        after: "/images/ba/caso3-superior-despues.jpg",
+      },
+    ],
+  },
+  {
+    id: "rinoplastia-caso-04",
+    label: "Caso 04",
+    title: "Rinoplastia",
+    detail: "Frente, perfiles, tres cuartos, basal y superior",
+    views: [
+      {
+        label: "Frente",
+        before: "/images/ba/caso4-frente-antes.jpg",
+        after: "/images/ba/caso4-frente-despues.jpg",
+      },
+      {
+        label: "Frente sonriendo",
+        before: "/images/ba/caso4-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso4-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil derecho",
+        before: "/images/ba/caso4-perfil-der-antes.jpg",
+        after: "/images/ba/caso4-perfil-der-despues.jpg",
+      },
+      {
+        label: "Perfil derecho sonriendo",
+        before: "/images/ba/caso4-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso4-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo",
+        before: "/images/ba/caso4-perfil-izq-antes.jpg",
+        after: "/images/ba/caso4-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Tres cuartos derecho",
+        before: "/images/ba/caso4-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso4-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Tres cuartos izquierdo",
+        before: "/images/ba/caso4-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso4-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Basal",
+        before: "/images/ba/caso4-basal-antes.jpg",
+        after: "/images/ba/caso4-basal-despues.jpg",
+      },
+      {
+        label: "Superior",
+        before: "/images/ba/caso4-superior-antes.jpg",
+        after: "/images/ba/caso4-superior-despues.jpg",
+      },
+    ],
+  },
+  {
+    id: "rinoplastia-01",
+    label: "Caso 05",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -326,7 +594,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-02",
-    label: "Caso 02",
+    label: "Caso 06",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -339,7 +607,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-03",
-    label: "Caso 03",
+    label: "Caso 07",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -352,7 +620,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-04",
-    label: "Caso 04",
+    label: "Caso 08",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -365,7 +633,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-05",
-    label: "Caso 05",
+    label: "Caso 09",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -378,7 +646,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-06",
-    label: "Caso 06",
+    label: "Caso 10",
     title: "Rinoplastia",
     detail: "Perfil y tres cuartos",
     views: [
@@ -394,28 +662,15 @@ export const gallery: {
       },
     ],
   },
-  {
-    id: "rinoplastia-07",
-    label: "Caso 07",
-    title: "Rinoplastia",
-    detail: "Registro quirúrgico",
-    views: [
-      {
-        label: "Registro quirúrgico",
-        before: "/images/ba/rinoplastia-08-antes.jpg",
-        after: "/images/ba/rinoplastia-08-despues.jpg",
-      },
-    ],
-  },
 ];
 
 export const testimonialsIntro = {
   eyebrow: "Opiniones",
   title: "Lo que escriben pacientes.",
-  support: "Reseñas publicadas en Google.",
+  moreOnGoogle: "Ver más opiniones en Google →",
 } as const;
 
-/** Reseñas publicadas en Google (verificar el enlace del lugar antes de producción). */
+/** Reseñas en Google — se muestran 3 a la vez y rotan en el sitio. */
 export const testimonials = [
   {
     quote:
@@ -433,6 +688,24 @@ export const testimonials = [
     quote:
       "Me hice una cirugía funcional de nariz. Apenas me sacaron los tapones ya sentí que respiraba mejor. Fue muy poco invasiva y a los pocos días ya tenía vida normal. Carlos me explicó todo de entrada; me sentí siempre cuidada.",
     name: "Sofia Ploschuk",
+    detail: "Google · 5.0",
+  },
+  {
+    quote:
+      "Gran profesional. Se toma el tiempo de explicar los procedimientos con claridad y siempre se muestra a disposición. A una semana de mi cirugía funcional y estética estoy muy contento con el resultado. Súper recomendable.",
+    name: "",
+    detail: "Google · 5.0",
+  },
+  {
+    quote:
+      "Quiero agradecer al doctor Carlos por su calidez humana y profesionalismo. Desde el primer momento se tomó el tiempo de escucharme, responder todas mis dudas y explicarme cada detalle del procedimiento. La cirugía fue en el Hospital CEMIC; me sentí muy acompañada. Sin dudas, lo recomiendo.",
+    name: "",
+    detail: "Google · 5.0",
+  },
+  {
+    quote:
+      "Excelente profesional, muy recomendable. Se destacó por su calidad humana: escucha, responde cada duda y explica con claridad el diagnóstico y las opciones. Su manera de atender es cálida y genera mucha confianza; se nota su sólida formación en otorrinolaringología.",
+    name: "",
     detail: "Google · 5.0",
   },
 ] as const;
@@ -563,6 +836,8 @@ export const ui = {
   seeCase: "Ver caso",
   viewsDocumented: "vistas documentadas",
   swipeCases: "Deslizá solo en esta zona para ver otro caso",
+  swipeAngles: "Deslizá en esta zona para ver otro ángulo",
+  angles: "Ángulos",
   enlargeDocument: "Ampliar documento",
   document: "Documento",
   previousDocument: "Documento anterior",

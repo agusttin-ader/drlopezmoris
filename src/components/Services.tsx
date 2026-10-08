@@ -26,7 +26,10 @@ export function Services() {
         <div className="mt-10 sm:mt-12">
           {services.map((service, i) => (
             <Reveal key={service.id} delay={i * 0.05}>
-              <article className="service-row grid gap-3 pl-4 sm:grid-cols-[5.5rem_1fr] sm:gap-8 sm:pl-5 md:grid-cols-[6.5rem_minmax(0,18rem)_1fr] xl:grid-cols-[7rem_minmax(0,20rem)_1fr] xl:gap-10 2xl:grid-cols-[7.5rem_minmax(0,22rem)_1fr]">
+              <article
+                id={service.id}
+                className="service-row grid gap-3 pl-4 sm:grid-cols-[5.5rem_1fr] sm:gap-8 sm:pl-5 md:grid-cols-[6.5rem_minmax(0,18rem)_1fr] xl:grid-cols-[7rem_minmax(0,20rem)_1fr] xl:gap-10 2xl:grid-cols-[7.5rem_minmax(0,22rem)_1fr]"
+              >
                 <p className="font-display text-3xl text-white/22 sm:text-4xl xl:text-[2.75rem]">
                   0{i + 1}
                 </p>

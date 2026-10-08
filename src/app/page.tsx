@@ -1,6 +1,4 @@
-import type { Metadata } from "next";
 import { About } from "@/components/About";
-import { ComingSoon } from "@/components/ComingSoon";
 import { Diplomas } from "@/components/Diplomas";
 import { Contact } from "@/components/Contact";
 import { FAQ } from "@/components/FAQ";
@@ -13,55 +11,10 @@ import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Testimonials } from "@/components/Testimonials";
 import { Timeline } from "@/components/Timeline";
 import { TrustStrip } from "@/components/TrustStrip";
-import { about, locations, site } from "@/lib/content";
-import { isComingSoon } from "@/lib/siteMode";
-
-export async function generateMetadata(): Promise<Metadata> {
-  if (!isComingSoon()) return {};
-
-  return {
-    title: "Próximamente",
-    description:
-      "Nuevo sitio del Dr. Carlos López Moris en preparación. Rinología y cirugía nasal en Buenos Aires.",
-    robots: { index: false, follow: false },
-    openGraph: {
-      title: `Próximamente · ${site.shortName}`,
-      description: "Estamos trabajando en una experiencia nueva. Volvé pronto.",
-    },
-  };
-}
+import { buildHomeJsonLd } from "@/lib/seo";
 
 export default function Home() {
-  if (isComingSoon()) {
-    return <ComingSoon />;
-  }
-
-  const primaryLocation = locations[1] ?? locations[0];
-  const hospital = locations[0];
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Physician",
-    name: site.name,
-    description: site.description,
-    url: site.url,
-    telephone: site.phoneHref.replace("tel:", ""),
-    email: site.email,
-    image: `${site.url}${about.images[0].src}`,
-    medicalSpecialty: ["Otolaryngology", "Rhinology", "Facial Plastic Surgery"],
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: primaryLocation.address.split(",")[0]?.trim() ?? primaryLocation.address,
-      addressLocality: "Buenos Aires",
-      addressRegion: "CABA",
-      addressCountry: "AR",
-    },
-    worksFor: {
-      "@type": "Hospital",
-      name: hospital.name,
-    },
-    sameAs: [site.instagram, site.linkedin],
-  };
+  const jsonLd = buildHomeJsonLd();
 
   return (
     <>
@@ -70,7 +23,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <main className="site-main flex-1">
+      <main id="contenido-principal" className="site-main flex-1">
         <Hero />
         <TrustStrip />
         <About />

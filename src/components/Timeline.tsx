@@ -27,7 +27,7 @@ export function Timeline() {
           {timeline.map((item, index) => {
             const left = index % 2 === 0;
             return (
-              <Reveal key={`${item.year}-${item.title}`} delay={index * 0.03}>
+              <Reveal key={`${index}-${item.year}-${item.title}`} delay={index * 0.03}>
                 <li className="relative grid gap-1 py-5 pl-7 md:grid-cols-2 md:gap-10 md:py-6 md:pl-0 xl:gap-14 2xl:gap-16">
                   <span
                     aria-hidden

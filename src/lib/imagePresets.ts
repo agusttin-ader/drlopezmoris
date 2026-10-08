@@ -1,19 +1,17 @@
 /**
- * Presets de next/image (layout / hinting).
- * Con `images.unoptimized` el navegador recibe el archivo de /public tal cual;
- * `sizes` sigue siendo útil para el atributo HTML y futuras optimizaciones.
- * `imageQuality` se mantiene por API de SmartImage (no-op en runtime unoptimized).
+ * Presets de next/image: `sizes` guía el ancho generado por el optimizador;
+ * `imageQuality` define compresión (AVIF/WebP) sin tocar los masters en /public.
  */
 
 export const imageQuality = {
   /** Hero a pantalla completa (LCP) */
-  hero: 82,
+  hero: 84,
   /** Retratos de sección */
-  section: 78,
+  section: 80,
   /** Tarjetas de galería / diplomas */
-  card: 72,
-  /** Visores a pantalla completa */
-  viewer: 85,
+  card: 76,
+  /** Visores a pantalla completa (antes/después) */
+  viewer: 88,
   /** Logo y chrome chico */
   chrome: 80,
 } as const;
@@ -31,6 +29,5 @@ export const imageSizes = {
   /** Lightbox / visor */
   viewer: "(max-width: 768px) 100vw, min(1100px, 85vw)",
   /** Comparador dentro del caso */
-  compare: "(max-width: 768px) 100vw, min(1000px, 80vw)",
-  logo: "40px",
+  compare: "(max-width: 768px) 100vw, min(1000px, 80vw)",  logo: "40px",
 } as const;

@@ -664,6 +664,11 @@ video {
 }
 
 /* Antes / después — casos clínicos */
+.case-study {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 28rem;
+}
+
 .case-chip {
   position: absolute;
   left: 0.75rem;
@@ -802,6 +807,45 @@ video {
 
 .case-viewer__toolbar {
   -webkit-overflow-scrolling: touch;
+}
+
+/* Ángulos en la tarjeta del caso */
+.case-angles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  row-gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case-angles__item + .case-angles__item::before {
+  content: "/";
+  margin-inline: 0.6rem;
+  color: color-mix(in srgb, var(--text-faint) 70%, transparent);
+  pointer-events: none;
+}
+
+.case-angles__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.3em;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+}
+
+.case-angles__link:hover {
+  color: var(--text);
+  text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 .case-viewer__footer {
@@ -1074,6 +1118,31 @@ video {
 .credentials-more__btn:hover {
   color: var(--accent);
   border-bottom-color: var(--accent);
+}
+
+.gallery-list {
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+  scroll-margin-bottom: 1.25rem;
+}
+
+.gallery-more__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gallery-more__chevron {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gallery-more__chevron.is-open {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-more__chevron {
+    transition: none;
+  }
 }
 
 @media (min-width: 640px) {
@@ -1506,6 +1575,24 @@ html.locale-text-swap :where(header, main.site-main, footer) :where(
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--inverse) 55%, transparent);
+}
+
+/* Velo sobre el hero: el blur se desvanece hacia abajo para no dejar un corte duro */
+.header-scrim {
+  position: absolute;
+  inset: 0 0 -1.75rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 20, 19, 0.55),
+    rgba(18, 20, 19, 0.28) 60%,
+    rgba(18, 20, 19, 0)
+  );
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  transition: opacity 0.3s ease;
 }
 
 .header-actions {
@@ -1984,99 +2071,4 @@ html.locale-text-swap :where(header, main.site-main, footer) :where(
 
 .contact-form__close:hover {
   color: var(--text);
-}
-
-/* -------------------------------------------------------------------------- */
-/* Coming soon (SITE_MODE=coming-soon)                                        */
-/* -------------------------------------------------------------------------- */
-
-.coming-soon__aurora {
-  position: absolute;
-  inset: -20%;
-  background:
-    radial-gradient(ellipse 55% 45% at 20% 30%, rgba(79, 106, 94, 0.45), transparent 60%),
-    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(120, 148, 132, 0.28), transparent 55%),
-    radial-gradient(ellipse 40% 35% at 50% 100%, rgba(47, 62, 54, 0.5), transparent 50%);
-  animation: coming-soon-aurora 32s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-  pointer-events: none;
-}
-
-.coming-soon__grain {
-  position: absolute;
-  inset: 0;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
-  pointer-events: none;
-}
-
-.coming-soon__orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  will-change: transform;
-  pointer-events: none;
-}
-
-.coming-soon__orb--a {
-  top: 12%;
-  left: 8%;
-  width: min(42vw, 18rem);
-  height: min(42vw, 18rem);
-  background: rgba(79, 106, 94, 0.35);
-}
-
-.coming-soon__orb--b {
-  right: 5%;
-  bottom: 18%;
-  width: min(48vw, 22rem);
-  height: min(48vw, 22rem);
-  background: rgba(180, 198, 186, 0.18);
-}
-
-.coming-soon__eyebrow-mark {
-  display: inline-block;
-  width: 1.5rem;
-  height: 1px;
-  margin-right: 0.65rem;
-  vertical-align: middle;
-  background: linear-gradient(90deg, transparent, rgba(247, 244, 239, 0.65));
-}
-
-.coming-soon__shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(247, 244, 239, 0.15) 35%,
-    rgba(247, 244, 239, 0.38) 50%,
-    rgba(247, 244, 239, 0.15) 65%,
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: coming-soon-shimmer 6.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
-
-@keyframes coming-soon-aurora {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(1%, -1.5%, 0) scale(1.015);
-  }
-}
-
-@keyframes coming-soon-shimmer {
-  0% {
-    background-position: 120% 0;
-  }
-  100% {
-    background-position: -120% 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .coming-soon__aurora,
-  .coming-soon__shimmer {
-    animation: none;
-  }
 }

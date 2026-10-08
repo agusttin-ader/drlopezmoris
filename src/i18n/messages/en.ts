@@ -11,21 +11,14 @@ export const site = {
   email: "contacto@drlopezmoris.com",
   instagram: "https://www.instagram.com/dr.lopezmoris.rinologia",
   linkedin: "https://www.linkedin.com/in/carlos-b-l%C3%B3pez-moris-225a0655/",
+  googleReviews:
+    "https://www.google.com/search?q=lopez+moris#lrd=0x95bccb74d8690f7f:0x9b1acf86bfc2d001,1,,,,",
   matricula: "MN 133953",
   location: "Buenos Aires, Argentina",
   logo: "/images/iso-moris.png",
   ogImage: "/images/banner1.jpg",
   footerBlurb:
     "Rhinology and nasal surgery in Buenos Aires. CEMIC · Palermo office · License MN 133953.",
-} as const;
-
-export const comingSoon = {
-  eyebrow: "New website underway",
-  title: "Coming soon",
-  subtitle:
-    "We're building a new experience to serve you better in rhinology and nasal surgery.",
-  hint: "Thank you for your patience.",
-  ctaWhatsApp: "Message on WhatsApp",
 } as const;
 
 export const nav = [
@@ -133,9 +126,9 @@ export const services = [
 ] as const;
 
 export const timelineIntro = {
-  eyebrow: "Training",
+  eyebrow: "Career",
   title: "Where I come from.",
-  support: "Academic and clinical milestones behind today's practice.",
+  support: "Training, teaching, and clinical work in public and private institutions.",
   footer: "Diplomas for each stage are below.",
   diplomasLink: "View diplomas →",
 } as const;
@@ -147,9 +140,44 @@ export const timeline = [
     place: "Universidad Nacional de Tucumán",
   },
   {
-    year: "2012",
-    title: "Rhinology & facial surgery",
-    place: "Universidad Autónoma de México",
+    year: "2010–2014",
+    title: "Otorhinolaryngology residency",
+    place: "Hospital General de Agudos José María Ramos Mejía",
+  },
+  {
+    year: "2011–2015",
+    title: "ENT department professor",
+    place: "Faculty of Medicine, Universidad de Buenos Aires",
+  },
+  {
+    year: "2012–2015",
+    title: "University otorhinolaryngologist",
+    place: "Universidad de Buenos Aires",
+  },
+  {
+    year: "2013",
+    title: "Observership in rhinology, laryngology & skull base surgery",
+    place: "Hospital Clínic de Barcelona",
+  },
+  {
+    year: "2014–2015",
+    title: "Chief resident",
+    place: "Hospital Ramos Mejía",
+  },
+  {
+    year: "2015",
+    title: "Rhinology unit — staff",
+    place: "CEMIC",
+  },
+  {
+    year: "2015",
+    title: "Assistant professor of otorhinolaryngology",
+    place: "CEMIC",
+  },
+  {
+    year: "2015–2023",
+    title: "External ENT & skull base consultant",
+    place: "Fleni",
   },
   {
     year: "2016",
@@ -157,9 +185,29 @@ export const timeline = [
     place: "Universidad de Buenos Aires",
   },
   {
+    year: "2019",
+    title: "Doctorate in medicine (in progress)",
+    place: "Instituto Universitario CEMIC",
+  },
+  {
+    year: "2020",
+    title: "Board member",
+    place: "Argentine Federation of Otorhinolaryngology Societies",
+  },
+  {
+    year: "2020",
+    title: "Board member",
+    place: "Club ORL",
+  },
+  {
     year: "2022",
     title: "Rhinoplasty Full Immersion Experience",
     place: "Rinoplastia de Buenos Aires",
+  },
+  {
+    year: "2022–2023",
+    title: "Rhinology & facial surgery",
+    place: "Universidad Autónoma de México",
   },
   {
     year: "2023",
@@ -294,6 +342,8 @@ export const galleryIntro = {
     "Clinical photos from patients who authorized their use. Each case had its own plan; these are not guaranteed outcomes.",
   aside: "With consent · medical education use",
   cta: "Wondering if your case fits what I do? Book a consultation.",
+  showMore: "View more cases",
+  showLess: "Show less",
 } as const;
 
 /** Un ángulo fotográfico dentro de un caso clínico. */
@@ -312,8 +362,225 @@ export const gallery: {
   views: GalleryView[];
 }[] = [
   {
-    id: "rinoplastia-01",
+    id: "rinoplastia-07",
     label: "Caso 01",
+    title: "Rhinoplasty",
+    detail: "Front, profiles, three-quarter, base & top",
+    views: [
+      {
+        label: "Front",
+        before: "/images/ba/caso08-frente-antes.jpg",
+        after: "/images/ba/caso08-frente-despues.jpg",
+      },
+      {
+        label: "Front, smiling",
+        before: "/images/ba/caso08-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso08-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right profile",
+        before: "/images/ba/caso08-perfil-der-antes.jpg",
+        after: "/images/ba/caso08-perfil-der-despues.jpg",
+      },
+      {
+        label: "Right profile, smiling",
+        before: "/images/ba/caso08-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso08-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Left profile, smiling",
+        before: "/images/ba/caso08-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso08-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right three-quarter",
+        before: "/images/ba/caso08-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso08-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Left three-quarter",
+        before: "/images/ba/caso08-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso08-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Base",
+        before: "/images/ba/caso08-basal-antes.jpg",
+        after: "/images/ba/caso08-basal-despues.jpg",
+      },
+      {
+        label: "Top",
+        before: "/images/ba/caso08-superior-antes.jpg",
+        after: "/images/ba/caso08-superior-despues.jpg",
+      },
+    ],
+  },
+  {
+    id: "rinoplastia-08",
+    label: "Caso 02",
+    title: "Rhinoplasty",
+    detail: "Front, profiles, three-quarter, base & top",
+    views: [
+      {
+        label: "Front",
+        before: "/images/ba/caso2-frente-antes.jpg",
+        after: "/images/ba/caso2-frente-despues.jpg",
+      },
+      {
+        label: "Front, smiling",
+        before: "/images/ba/caso2-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso2-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right profile",
+        before: "/images/ba/caso2-perfil-der-antes.jpg",
+        after: "/images/ba/caso2-perfil-der-despues.jpg",
+      },
+      {
+        label: "Right profile, smiling",
+        before: "/images/ba/caso2-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso2-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Left profile",
+        before: "/images/ba/caso2-perfil-izq-antes.jpg",
+        after: "/images/ba/caso2-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Left profile, smiling",
+        before: "/images/ba/caso2-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso2-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right three-quarter",
+        before: "/images/ba/caso2-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso2-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Left three-quarter",
+        before: "/images/ba/caso2-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso2-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Base",
+        before: "/images/ba/caso2-basal-antes.jpg",
+        after: "/images/ba/caso2-basal-despues.jpg",
+      },
+      {
+        label: "Top",
+        before: "/images/ba/caso2-superior-antes.jpg",
+        after: "/images/ba/caso2-superior-despues.jpg",
+      },
+    ],
+  },
+  {
+    id: "rinoplastia-caso-03",
+    label: "Caso 03",
+    title: "Rhinoplasty",
+    detail: "Front, profiles, three-quarter, base & top",
+    views: [
+      {
+        label: "Front",
+        before: "/images/ba/caso3-frente-antes.jpg",
+        after: "/images/ba/caso3-frente-despues.jpg",
+      },
+      {
+        label: "Right profile",
+        before: "/images/ba/caso3-perfil-der-antes.jpg",
+        after: "/images/ba/caso3-perfil-der-despues.jpg",
+      },
+      {
+        label: "Right profile, smiling",
+        before: "/images/ba/caso3-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso3-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Left profile",
+        before: "/images/ba/caso3-perfil-izq-antes.jpg",
+        after: "/images/ba/caso3-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Left profile, smiling",
+        before: "/images/ba/caso3-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso3-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right three-quarter",
+        before: "/images/ba/caso3-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso3-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Left three-quarter",
+        before: "/images/ba/caso3-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso3-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Base",
+        before: "/images/ba/caso3-basal-antes.jpg",
+        after: "/images/ba/caso3-basal-despues.jpg",
+      },
+      {
+        label: "Top",
+        before: "/images/ba/caso3-superior-antes.jpg",
+        after: "/images/ba/caso3-superior-despues.jpg",
+      },
+    ],
+  },
+  {
+    id: "rinoplastia-caso-04",
+    label: "Caso 04",
+    title: "Rhinoplasty",
+    detail: "Front, profiles, three-quarter, base & top",
+    views: [
+      {
+        label: "Front",
+        before: "/images/ba/caso4-frente-antes.jpg",
+        after: "/images/ba/caso4-frente-despues.jpg",
+      },
+      {
+        label: "Front, smiling",
+        before: "/images/ba/caso4-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso4-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right profile",
+        before: "/images/ba/caso4-perfil-der-antes.jpg",
+        after: "/images/ba/caso4-perfil-der-despues.jpg",
+      },
+      {
+        label: "Right profile, smiling",
+        before: "/images/ba/caso4-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso4-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Left profile",
+        before: "/images/ba/caso4-perfil-izq-antes.jpg",
+        after: "/images/ba/caso4-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Right three-quarter",
+        before: "/images/ba/caso4-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso4-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Left three-quarter",
+        before: "/images/ba/caso4-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso4-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Base",
+        before: "/images/ba/caso4-basal-antes.jpg",
+        after: "/images/ba/caso4-basal-despues.jpg",
+      },
+      {
+        label: "Top",
+        before: "/images/ba/caso4-superior-antes.jpg",
+        after: "/images/ba/caso4-superior-despues.jpg",
+      },
+    ],
+  },
+  {
+    id: "rinoplastia-01",
+    label: "Caso 05",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -326,7 +593,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-02",
-    label: "Caso 02",
+    label: "Caso 06",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -339,7 +606,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-03",
-    label: "Caso 03",
+    label: "Caso 07",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -352,7 +619,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-04",
-    label: "Caso 04",
+    label: "Caso 08",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -365,7 +632,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-05",
-    label: "Caso 05",
+    label: "Caso 09",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -378,7 +645,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-06",
-    label: "Caso 06",
+    label: "Caso 10",
     title: "Rhinoplasty",
     detail: "Profile & three-quarter",
     views: [
@@ -394,28 +661,15 @@ export const gallery: {
       },
     ],
   },
-  {
-    id: "rinoplastia-07",
-    label: "Caso 07",
-    title: "Rhinoplasty",
-    detail: "Surgical record",
-    views: [
-      {
-        label: "Surgical record",
-        before: "/images/ba/rinoplastia-08-antes.jpg",
-        after: "/images/ba/rinoplastia-08-despues.jpg",
-      },
-    ],
-  },
 ];
 
 export const testimonialsIntro = {
   eyebrow: "Reviews",
   title: "What patients write.",
-  support: "Reviews published on Google.",
+  moreOnGoogle: "Read more reviews on Google →",
 } as const;
 
-/** Google reviews (verify the place link before production). */
+/** Google reviews — three shown at a time, rotating on the site. */
 export const testimonials = [
   {
     quote:
@@ -435,6 +689,24 @@ export const testimonials = [
     name: "Sofia Ploschuk",
     detail: "Google · 5.0",
   },
+  {
+    quote:
+      "An excellent professional. He takes time to explain procedures clearly and is always available. One week after my functional and aesthetic surgery I am very happy with the result. Highly recommended.",
+    name: "",
+    detail: "Google · 5.0",
+  },
+  {
+    quote:
+      "I want to thank Dr. Carlos for his warmth and professionalism. From the first visit he listened, answered every question, and explained each detail of the procedure. Surgery was at CEMIC Hospital; I felt supported throughout. I recommend him without hesitation.",
+    name: "",
+    detail: "Google · 5.0",
+  },
+  {
+    quote:
+      "Outstanding professional and highly recommended. He listens, answers every question, and explains the diagnosis and options clearly. His manner is warm and builds real trust; his training in ENT really shows.",
+    name: "",
+    detail: "Google · 5.0",
+  },
 ] as const;
 
 export const faqsIntro = {
@@ -446,44 +718,44 @@ export const faqsIntro = {
 
 export const faqs = [
   {
-    question: "¿Cuánto dura la recuperación?",
+    question: "How long is recovery?",
     answer:
-      "Es escalonada. A las 48 hs: movimiento en casa y tareas livianas (sin agacharte ni forzar). Entre 5 y 10 días: muchas personas vuelven a trabajo de oficina o salidas cortas. Gimnasio o deporte intenso: en general de 3 semanas a 1 mes, para bajar riesgo de sangrado o inflamación. El ritmo exacto depende de cómo evoluciones.",
+      "It happens in stages. After 48 hours: moving around at home and light tasks (no bending over or straining). Between 5 and 10 days: many people return to office work or short outings. Gym or intense sports: usually 3 weeks to 1 month, to lower the risk of bleeding or swelling. The exact pace depends on how you heal.",
   },
   {
-    question: "¿Qué cuidados debo tener?",
+    question: "What care do I need to take?",
     answer:
-      "Los primeros 7 días, reposo relativo o actividades muy tranquilas —no hace falta quedarse en la cama. Actividad aeróbica: esperar alrededor de 3 semanas. Esfuerzo anaeróbico intenso: cerca de un mes.",
+      "For the first 7 days, relative rest or very calm activities —you don't need to stay in bed. Aerobic activity: wait about 3 weeks. Intense anaerobic effort: about a month.",
   },
   {
-    question: "¿Cuánto dura una cirugía nasal?",
+    question: "How long does nasal surgery take?",
     answer:
-      "Depende del caso. En funcional suele rondar las 2 horas; en procedimientos estéticos, cerca de 3. Son promedios: puede ser menos o más según lo que haya que corregir.",
+      "It depends on the case. Functional surgery usually takes around 2 hours; aesthetic procedures, about 3. These are averages: it may be shorter or longer depending on what needs correcting.",
   },
   {
-    question: "¿Cuánto tiempo tengo que estar internado?",
+    question: "How long will I stay in hospital?",
     answer:
-      "En la mayoría de los casos es ambulatorio: aproximadamente una hora antes y tres horas después de la cirugía.",
+      "In most cases it's outpatient: roughly one hour before and three hours after surgery.",
   },
   {
-    question: "¿Es doloroso?",
+    question: "Is it painful?",
     answer:
-      "El postoperatorio de rinoplastia suele ser poco doloroso. Lo más habitual es congestión o presión, parecido a un resfrío. Si hace falta, se maneja con analgésicos comunes (por ejemplo ibuprofeno o diclofenac), según indiquemos.",
+      "Recovery after rhinoplasty is usually not very painful. The most common sensation is congestion or pressure, similar to a cold. If needed, it's managed with common pain relievers (for example ibuprofen or diclofenac), as we advise.",
   },
   {
-    question: "¿Qué estudios necesito antes de una rinoplastia?",
+    question: "What tests do I need before rhinoplasty?",
     answer:
-      "Evaluación otorrinolaringológica, análisis de sangre (hemograma, glucemia, coagulación, función renal) y electrocardiograma con valoración cardiológica. Según el caso, a veces radiografía de tórax o tomografía de nariz y senos.",
+      "An ENT assessment, blood tests (complete blood count, glucose, coagulation, kidney function), and an electrocardiogram with cardiology clearance. Depending on the case, sometimes a chest X-ray or a CT scan of the nose and sinuses.",
   },
   {
-    question: "¿Con qué anestesia se hace la rinoplastia?",
+    question: "What anesthesia is used for rhinoplasty?",
     answer:
-      "Anestesia general. Trabajamos con anestesiólogos titulados por la Asociación Argentina de Anestesiología, del equipo habitual, con experiencia en cirugía facial.",
+      "General anesthesia. We work with our regular team of anesthesiologists certified by the Argentine Association of Anesthesiology, experienced in facial surgery.",
   },
   {
-    question: "¿Cuándo se ven los resultados definitivos?",
+    question: "When are the final results visible?",
     answer:
-      "Al sacar la férula (cerca de una semana) ya se ve un cambio, todavía con inflamación. Alrededor de los 2 meses se aprecia gran parte del resultado. Los cambios finos pueden seguir hasta el año; para el entorno social, suele estabilizarse bastante después del tercer mes.",
+      "When the splint comes off (about a week) you can already see a change, still with swelling. Around 2 months, much of the result is visible. Fine changes can continue for up to a year; socially, things are usually quite settled after the third month.",
   },
 ] as const;
 
@@ -561,6 +833,8 @@ export const ui = {
   seeCase: "View case",
   viewsDocumented: "documented views",
   swipeCases: "Swipe only in this area to see another case",
+  swipeAngles: "Swipe in this area to see another angle",
+  angles: "Angles",
   enlargeDocument: "Enlarge document",
   document: "Document",
   previousDocument: "Previous document",
