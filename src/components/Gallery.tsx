@@ -10,6 +10,7 @@ import { Reveal } from "./Reveal";
 import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
 import { SectionHeading } from "./ui/SectionHeading";
+import { SectionScrollTarget } from "./ui/SectionScrollTarget";
 import { BrandLogo } from "./BrandLogo";
 import { SmartImage } from "./ui/SmartImage";
 
@@ -57,8 +58,9 @@ export function Gallery() {
   }, [expanded, reduce]);
 
   return (
-    <section id="galeria" className="section">
+    <section className="section gallery-section">
       <Container>
+        <SectionScrollTarget id="galeria" />
         <Reveal>
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <SectionHeading

@@ -149,8 +149,20 @@
 /* Base                                                                       */
 /* -------------------------------------------------------------------------- */
 
+:root {
+  --scroll-anchor-offset: calc(var(--header-h) + 0.75rem);
+}
+
 html {
-  scroll-padding-top: calc(var(--header-h) + 0.75rem);
+  scroll-padding-top: var(--scroll-anchor-offset);
+}
+
+/* Ancla invisible en el eyebrow; el offset lo resuelve scroll-padding en html */
+.section-scroll-target {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -192,7 +204,7 @@ body {
 
 /* Modales en portal: evitar recorte de fixed dentro de content-visibility */
 .site-main > section.section.credentials-section,
-.site-main > section#galeria {
+.site-main > section.gallery-section {
   content-visibility: visible;
   contain-intrinsic-size: auto;
 }

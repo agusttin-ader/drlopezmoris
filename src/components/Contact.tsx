@@ -9,6 +9,7 @@ import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
 import { MailIcon } from "./icons/MailIcon";
 import { SectionHeading } from "./ui/SectionHeading";
+import { SectionScrollTarget } from "./ui/SectionScrollTarget";
 
 export function Contact() {
   const { contactIntro, contactForm, hero, site } = useMessages();
@@ -42,9 +43,10 @@ export function Contact() {
   }
 
   return (
-    <section id="contacto" className="section">
+    <section className="section">
       <Container className="grid gap-12 lg:grid-cols-[1fr_0.95fr] lg:gap-16 xl:gap-20 2xl:gap-24">
         <Reveal>
+          <SectionScrollTarget id="contacto" />
           <SectionHeading
             eyebrow={contactIntro.eyebrow}
             title={contactIntro.title}

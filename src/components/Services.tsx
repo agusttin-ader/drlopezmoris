@@ -6,14 +6,16 @@ import { Reveal } from "./Reveal";
 import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
 import { SectionHeading } from "./ui/SectionHeading";
+import { SectionScrollTarget } from "./ui/SectionScrollTarget";
 
 export function Services() {
   const { hero, services, servicesIntro } = useMessages();
   const { openBooking } = useBooking();
 
   return (
-    <section id="servicios" className="section section-deep">
+    <section className="section section-deep">
       <Container>
+        <SectionScrollTarget id="servicios" />
         <Reveal>
           <SectionHeading
             tone="dark"

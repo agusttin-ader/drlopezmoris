@@ -6,6 +6,7 @@ import { Reveal } from "./Reveal";
 import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
 import { SectionHeading } from "./ui/SectionHeading";
+import { SectionScrollTarget } from "./ui/SectionScrollTarget";
 import { SmartImage } from "./ui/SmartImage";
 
 export function About() {
@@ -13,10 +14,10 @@ export function About() {
   const { openBooking } = useBooking();
 
   return (
-    <section id="sobre-mi" className="section">
+    <section className="section">
       <Container>
         <div className="grid items-start gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 xl:gap-20 2xl:gap-24">
-          <Reveal variant="soft" className="lg:sticky lg:top-24">
+          <Reveal variant="soft" className="order-2 lg:order-1 lg:sticky lg:top-24">
             <div className="grid gap-3">
               <div className="media-frame media-frame--portrait media-skeleton w-full">
                 <SmartImage
@@ -47,8 +48,9 @@ export function About() {
             </div>
           </Reveal>
 
-          <div>
+          <div className="order-1 lg:order-2">
             <Reveal>
+              <SectionScrollTarget id="sobre-mi" />
               <SectionHeading
                 eyebrow={about.eyebrow}
                 title={about.title}
