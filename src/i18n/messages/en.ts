@@ -4,7 +4,7 @@ export const site = {
   title: "ENT physician · Rhinology specialist",
   description:
     "ENT specialist in Buenos Aires: rhinology, functional and aesthetic rhinoplasty, and nasal surgery. Appointments at CEMIC University Hospital and private practice in Palermo.",
-  url: "https://drlopezmoris.com",
+  url: "https://www.drlopezmoris.com",
   phoneDisplay: "+54 9 11 7200-3461",
   phoneHref: "tel:+5491172003461",
   whatsappUrl: "https://wa.me/5491172003461",

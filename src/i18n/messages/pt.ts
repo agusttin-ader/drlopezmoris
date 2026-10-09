@@ -4,7 +4,7 @@ export const site = {
   title: "Médico otorrinolaringologista · Especialista em rinologia",
   description:
     "Otorrinolaringologista em Buenos Aires: rinologia, rinoplastia funcional e estética, e cirurgia nasal. Atendimento no Hospital Universitário CEMIC e consultório em Palermo.",
-  url: "https://drlopezmoris.com",
+  url: "https://www.drlopezmoris.com",
   phoneDisplay: "+54 9 11 7200-3461",
   phoneHref: "tel:+5491172003461",
   whatsappUrl: "https://wa.me/5491172003461",

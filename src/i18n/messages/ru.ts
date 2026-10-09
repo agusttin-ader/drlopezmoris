@@ -4,7 +4,7 @@ export const site = {
   title: "Врач-оториноларинголог · Специалист по ринологии",
   description:
     "Оториноларинголог в Буэнос-Айресе: ринология, функциональная и эстетическая ринопластика, хирургия носа. Приём в Университетской больнице CEMIC и в частном кабинете в Палермо.",
-  url: "https://drlopezmoris.com",
+  url: "https://www.drlopezmoris.com",
   phoneDisplay: "+54 9 11 7200-3461",
   phoneHref: "tel:+5491172003461",
   whatsappUrl: "https://wa.me/5491172003461",
