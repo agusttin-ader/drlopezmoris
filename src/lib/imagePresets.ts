@@ -4,8 +4,8 @@
  */
 
 export const imageQuality = {
-  /** Hero a pantalla completa (LCP) */
-  hero: 84,
+  /** Hero a pantalla completa (LCP); máxima calidad permitida por next.config */
+  hero: 90,
   /** Retratos de sección */
   section: 80,
   /** Tarjetas de galería / diplomas */
@@ -17,7 +17,11 @@ export const imageQuality = {
 } as const;
 
 export const imageSizes = {
-  hero: "100vw",
+  /**
+   * Compensa scale CSS del hero (≈1.22 móvil, kenburns ≈1.08) sin cambiar layout.
+   * Pide más píxeles al optimizador para que no se vea blanda al ampliar.
+   */
+  hero: "(max-width: 640px) 125vw, 110vw",
   /** Retrato principal (Sobre mí) */
   portrait: "(max-width: 640px) 100vw, (max-width: 1024px) 92vw, 40vw",
   /** Miniaturas de retrato */
