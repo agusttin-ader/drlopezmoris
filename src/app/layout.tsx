@@ -34,9 +34,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es-AR" className={`${display.variable} ${body.variable} h-full`}>
+      <head>
+        <ScrollToTopOnReload />
+      </head>
       <body className="min-h-full antialiased">
         <LocaleProvider>
-          <ScrollToTopOnReload />
           <BookingProvider>
             {children}
             <BookingSheet />
