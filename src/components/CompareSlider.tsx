@@ -2,6 +2,7 @@
 
 import {
   useCallback,
+  useEffect,
   useId,
   useRef,
   useState,
@@ -25,6 +26,10 @@ type CompareSliderProps = {
   imagePreset?: ImagePreset;
 };
 
+function clampPos(value: number) {
+  return Math.min(96, Math.max(4, value));
+}
+
 export function CompareSlider({
   beforeSrc,
   afterSrc,
@@ -42,29 +47,99 @@ export function CompareSlider({
   const [pos, setPos] = useState(initialPosition);
   const [dragging, setDragging] = useState(false);
   const frameRef = useRef<HTMLDivElement>(null);
+  const beforeWrapRef = useRef<HTMLDivElement>(null);
+  const beforeImgRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const posRef = useRef(initialPosition);
+  const draggingRef = useRef(false);
+  const rafRef = useRef(0);
+  const pendingXRef = useRef<number | null>(null);
+  const rectRef = useRef<{ left: number; width: number } | null>(null);
   const labelId = useId();
 
-  const updateFromClientX = useCallback((clientX: number) => {
+  const syncFrameWidth = useCallback(() => {
     const el = frameRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const next = ((clientX - rect.left) / rect.width) * 100;
-    setPos(Math.min(96, Math.max(4, next)));
+    const img = beforeImgRef.current;
+    if (!el || !img) return;
+    img.style.width = `${el.clientWidth}px`;
   }, []);
 
+  const paintPos = useCallback((next: number) => {
+    const clamped = clampPos(next);
+    posRef.current = clamped;
+    const wrap = beforeWrapRef.current;
+    const line = lineRef.current;
+    if (wrap) wrap.style.width = `${clamped}%`;
+    // left % es relativo al frame; transform % sería relativo al handle (1px)
+    if (line) line.style.left = `${clamped}%`;
+  }, []);
+
+  const flushPending = useCallback(() => {
+    rafRef.current = 0;
+    const clientX = pendingXRef.current;
+    if (clientX == null) return;
+    pendingXRef.current = null;
+    const rect = rectRef.current ?? frameRef.current?.getBoundingClientRect();
+    if (!rect || !rect.width) return;
+    rectRef.current = { left: rect.left, width: rect.width };
+    paintPos(((clientX - rect.left) / rect.width) * 100);
+  }, [paintPos]);
+
+  const scheduleFromClientX = useCallback(
+    (clientX: number) => {
+      pendingXRef.current = clientX;
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(flushPending);
+    },
+    [flushPending],
+  );
+
+  useEffect(() => {
+    syncFrameWidth();
+    paintPos(posRef.current);
+    const el = frameRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => {
+      syncFrameWidth();
+      paintPos(posRef.current);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [paintPos, syncFrameWidth]);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    paintPos(initialPosition);
+    setPos(initialPosition);
+  }, [beforeSrc, afterSrc, initialPosition, paintPos]);
+
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const el = frameRef.current;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      rectRef.current = { left: rect.left, width: rect.width };
+    }
     e.currentTarget.setPointerCapture(e.pointerId);
+    draggingRef.current = true;
     setDragging(true);
-    updateFromClientX(e.clientX);
+    scheduleFromClientX(e.clientX);
   };
 
   const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!dragging) return;
-    updateFromClientX(e.clientX);
+    if (!draggingRef.current) return;
+    scheduleFromClientX(e.clientX);
   };
 
   const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    draggingRef.current = false;
+    rectRef.current = null;
     setDragging(false);
+    setPos(posRef.current);
     try {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch {
@@ -75,7 +150,9 @@ export function CompareSlider({
   return (
     <div
       ref={frameRef}
-      className={`compare-frame group relative overflow-hidden bg-deep select-none touch-none ${className}`.trim()}
+      className={`compare-frame group relative overflow-hidden bg-deep select-none touch-none ${
+        dragging ? "is-dragging" : ""
+      } ${className}`.trim()}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -91,12 +168,16 @@ export function CompareSlider({
         if (e.key === "ArrowLeft") {
           e.preventDefault();
           e.stopPropagation();
-          setPos((p) => Math.max(4, p - 4));
+          const next = clampPos(posRef.current - 4);
+          paintPos(next);
+          setPos(next);
         }
         if (e.key === "ArrowRight") {
           e.preventDefault();
           e.stopPropagation();
-          setPos((p) => Math.min(96, p + 4));
+          const next = clampPos(posRef.current + 4);
+          paintPos(next);
+          setPos(next);
         }
       }}
     >
@@ -112,18 +193,26 @@ export function CompareSlider({
           fill
           className={`${objectClass} object-center`}
           draggable={false}
+          priority
         />
       </div>
 
-      <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        <SmartImage
-          src={beforeSrc}
-          alt={beforeAlt}
-          preset={imagePreset}
-          fill
-          className={`${objectClass} object-center`}
-          draggable={false}
-        />
+      <div
+        ref={beforeWrapRef}
+        className="compare-frame__before absolute inset-y-0 left-0 overflow-hidden"
+        style={{ width: `${pos}%` }}
+      >
+        <div ref={beforeImgRef} className="relative h-full" style={{ width: "100%" }}>
+          <SmartImage
+            src={beforeSrc}
+            alt={beforeAlt}
+            preset={imagePreset}
+            fill
+            className={`${objectClass} object-center`}
+            draggable={false}
+            priority
+          />
+        </div>
       </div>
 
       {showLabels ? (
@@ -134,7 +223,8 @@ export function CompareSlider({
       ) : null}
 
       <div
-        className="absolute inset-y-0 z-10 w-px bg-inverse/80"
+        ref={lineRef}
+        className="compare-frame__divider absolute inset-y-0 z-10 w-px -translate-x-1/2 bg-inverse/80"
         style={{ left: `${pos}%` }}
         aria-hidden
       >
@@ -182,20 +272,31 @@ export function ToggleCompare({
   imagePreset = "compare",
 }: ToggleCompareProps) {
   const { ui } = useMessages();
-  const src = showing === "before" ? beforeSrc : afterSrc;
-  const alt = showing === "before" ? beforeAlt : afterAlt;
   const objectClass = imageFit === "contain" ? "object-contain" : "object-cover";
 
   return (
     <div className={`compare-frame relative overflow-hidden bg-deep ${className}`.trim()}>
       <SmartImage
-        src={src}
-        alt={alt}
+        src={afterSrc}
+        alt={afterAlt}
         preset={imagePreset}
         fill
-        className={`${objectClass} object-center`}
+        className={`${objectClass} object-center transition-opacity duration-150 ease-out ${
+          showing === "after" ? "opacity-100" : "opacity-0"
+        }`}
+        priority
       />
-      <div className="absolute inset-x-0 bottom-0 flex justify-center gap-2 p-4">
+      <SmartImage
+        src={beforeSrc}
+        alt={beforeAlt}
+        preset={imagePreset}
+        fill
+        className={`${objectClass} object-center transition-opacity duration-150 ease-out ${
+          showing === "before" ? "opacity-100" : "opacity-0"
+        }`}
+        priority
+      />
+      <div className="absolute inset-x-0 bottom-0 z-10 flex justify-center gap-2 p-4">
         <button
           type="button"
           className={`focus-ring min-h-11 rounded-full px-5 text-sm font-medium transition ${

@@ -202,11 +202,16 @@ body {
   contain-intrinsic-size: auto 760px;
 }
 
-/* Modales en portal: evitar recorte de fixed dentro de content-visibility */
-.site-main > section.section.credentials-section,
-.site-main > section.gallery-section {
+/* Diplomas: lightbox fixed dentro de la sección — no diferir el paint */
+.site-main > section.section.credentials-section {
   content-visibility: visible;
   contain-intrinsic-size: auto;
+}
+
+/* Galería: diferir paint hasta cerca del viewport (modal va a document.body) */
+.site-main > section.section.gallery-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 2200px;
 }
 
 ::selection {
@@ -700,6 +705,21 @@ video {
 .compare-frame {
   cursor: ew-resize;
   border-radius: 0;
+  contain: layout paint style;
+  touch-action: none;
+}
+
+.compare-frame.is-dragging {
+  cursor: grabbing;
+}
+
+.compare-frame.is-dragging .compare-frame__before,
+.compare-frame.is-dragging .compare-frame__divider {
+  will-change: width, left;
+}
+
+.case-study__thumb {
+  background: color-mix(in srgb, var(--surface-muted) 92%, var(--border));
 }
 
 /* Visor de caso — layout responsive */
@@ -726,34 +746,19 @@ video {
 }
 
 .case-viewer__stage {
+  position: relative;
   display: flex;
   flex: 1 1 auto;
   align-items: center;
   justify-content: center;
   min-height: 0;
-  padding: 0.35rem 0.5rem 0.5rem;
   overflow: hidden;
 }
 
-@media (min-width: 640px) {
-  .case-viewer__stage {
-    padding: 0.5rem 0.75rem 0.65rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .case-viewer__stage {
-    padding: 0.65rem clamp(5rem, 9vw, 8.5rem) 0.85rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  .case-viewer__stage {
-    padding-inline: clamp(6rem, 10vw, 10rem);
-  }
-}
-
 .case-viewer__media-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -762,6 +767,26 @@ video {
   min-height: 0;
   max-height: 100%;
   margin-inline: auto;
+  padding: 0.35rem 0.5rem 0.5rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .case-viewer__media-wrap {
+    padding: 0.5rem 0.75rem 0.65rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .case-viewer__media-wrap {
+    padding: 0.65rem clamp(5rem, 9vw, 8.5rem) 0.85rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .case-viewer__media-wrap {
+    padding-inline: clamp(6rem, 10vw, 10rem);
+  }
 }
 
 .case-viewer-compare {
@@ -855,9 +880,14 @@ video {
     text-decoration-color 0.2s ease;
 }
 
-.case-angles__link:hover {
+.case-angles__link:hover,
+.case-angles__link.is-active {
   color: var(--text);
   text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.case-angles__link.is-active {
+  text-decoration-color: color-mix(in srgb, var(--accent) 75%, transparent);
 }
 
 .case-viewer__footer {

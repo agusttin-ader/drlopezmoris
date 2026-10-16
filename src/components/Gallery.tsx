@@ -13,6 +13,7 @@ import { SectionHeading } from "./ui/SectionHeading";
 import { SectionScrollTarget } from "./ui/SectionScrollTarget";
 import { BrandLogo } from "./BrandLogo";
 import { SmartImage } from "./ui/SmartImage";
+import { prefetchOptimizedImages } from "@/lib/prefetchImages";
 
 const PREVIEW_COUNT = 3;
 
@@ -79,18 +80,13 @@ export function Gallery() {
           className="gallery-list mt-10 space-y-8 sm:mt-12 sm:space-y-10 lg:space-y-12"
         >
           {visibleCases.map((item, index) => (
-            <Reveal
+            <CaseStudyCard
               key={item.id}
-              delay={index < PREVIEW_COUNT ? Math.min(index * 0.04, 0.2) : 0}
-              variant={index === 0 ? "soft" : "up"}
-            >
-              <CaseStudyCard
-                item={item}
-                index={index}
-                featured={index === 0}
-                onOpen={(view = 0) => setActive({ index, view })}
-              />
-            </Reveal>
+              item={item}
+              index={index}
+              featured={index === 0}
+              onOpen={(view = 0) => setActive({ index, view })}
+            />
           ))}
         </div>
 
@@ -161,6 +157,32 @@ export function Gallery() {
   );
 }
 
+function PreviewHalf({
+  src,
+  alt,
+  chip,
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  chip: string;
+  priority?: boolean;
+}) {
+  return (
+    <div className="case-study__thumb relative aspect-[4/5] overflow-hidden bg-surface-muted sm:aspect-[3/4] xl:aspect-[4/5] 2xl:min-h-[22rem]">
+      <SmartImage
+        src={src}
+        alt={alt}
+        preset="galleryCard"
+        fill
+        priority={priority}
+        className="object-cover"
+      />
+      <span className="case-chip">{chip}</span>
+    </div>
+  );
+}
+
 function CaseStudyCard({
   item,
   index,
@@ -174,7 +196,21 @@ function CaseStudyCard({
 }) {
   const { ui } = useMessages();
   const reverse = index % 2 === 1;
-  const cover = item.views[0];
+  const [previewView, setPreviewView] = useState(0);
+  const cover = item.views[Math.min(previewView, item.views.length - 1)] ?? item.views[0];
+  const eager = index === 0;
+
+  const openCase = (view = previewView) => {
+    const v = item.views[view] ?? item.views[0];
+    if (v) prefetchOptimizedImages([v.before, v.after], "viewer");
+    onOpen(view);
+  };
+
+  const previewAngle = (i: number) => {
+    setPreviewView(i);
+    const v = item.views[i];
+    if (v) prefetchOptimizedImages([v.before, v.after], "viewer");
+  };
 
   return (
     <article
@@ -185,31 +221,23 @@ function CaseStudyCard({
       <div className={`lg:col-span-7 ${reverse ? "lg:order-2" : ""}`}>
         <button
           type="button"
-          onClick={() => onOpen()}
+          onClick={() => openCase(previewView)}
           className="group focus-ring relative block w-full overflow-hidden text-left"
           aria-label={`${ui.seeCase}: ${item.title}`}
         >
-          <div className="grid grid-cols-2 gap-px bg-border">
-            <div className="media-skeleton relative aspect-[4/5] bg-deep sm:aspect-[3/4] xl:aspect-[4/5] 2xl:min-h-[22rem]">
-              <SmartImage
-                src={cover.before}
-                alt={`${item.title} — ${ui.before.toLowerCase()}`}
-                preset="galleryCard"
-                fill
-                className="object-cover transition duration-500 group-hover:scale-[1.02]"
-              />
-              <span className="case-chip">{ui.before}</span>
-            </div>
-            <div className="media-skeleton relative aspect-[4/5] bg-deep sm:aspect-[3/4] xl:aspect-[4/5] 2xl:min-h-[22rem]">
-              <SmartImage
-                src={cover.after}
-                alt={`${item.title} — ${ui.after.toLowerCase()}`}
-                preset="galleryCard"
-                fill
-                className="object-cover transition duration-500 group-hover:scale-[1.02]"
-              />
-              <span className="case-chip">{ui.after}</span>
-            </div>
+          <div className="case-study__preview-pair grid grid-cols-2 gap-px bg-border">
+            <PreviewHalf
+              src={cover.before}
+              alt={`${item.title} — ${ui.before.toLowerCase()}`}
+              chip={ui.before}
+              priority={eager}
+            />
+            <PreviewHalf
+              src={cover.after}
+              alt={`${item.title} — ${ui.after.toLowerCase()}`}
+              chip={ui.after}
+              priority={eager}
+            />
           </div>
         </button>
       </div>
@@ -233,8 +261,12 @@ function CaseStudyCard({
                 <li key={v.label} className="case-angles__item">
                   <button
                     type="button"
-                    className="case-angles__link focus-ring"
-                    onClick={() => onOpen(i)}
+                    className={`case-angles__link focus-ring ${
+                      i === previewView ? "is-active" : ""
+                    }`}
+                    onMouseEnter={() => previewAngle(i)}
+                    onFocus={() => previewAngle(i)}
+                    onClick={() => openCase(i)}
                   >
                     {v.label.replace(/^Vista de /i, "")}
                   </button>
@@ -245,7 +277,7 @@ function CaseStudyCard({
         ) : null}
         <button
           type="button"
-          onClick={() => onOpen()}
+          onClick={() => openCase(previewView)}
           className="btn btn-secondary focus-ring mt-6 w-full sm:w-auto"
         >
           {ui.seeCase}
@@ -302,6 +334,18 @@ function CaseViewer({
   const goPrev = () => (safeView > 0 ? selectView(safeView - 1) : onPrevCase());
 
   useEffect(() => {
+    const nearby = item.views.flatMap((v) => [v.before, v.after]);
+    const nextCase = gallery[(index + 1) % gallery.length];
+    const prevCase = gallery[(index - 1 + gallery.length) % gallery.length];
+    if (nextCase?.views[0]) nearby.push(nextCase.views[0].before, nextCase.views[0].after);
+    if (prevCase) {
+      const last = prevCase.views[prevCase.views.length - 1];
+      if (last) nearby.push(last.before, last.after);
+    }
+    prefetchOptimizedImages(nearby, "viewer");
+  }, [gallery, index, item.views]);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       if (target?.closest?.('[role="slider"]')) return;
@@ -321,7 +365,7 @@ function CaseViewer({
       initial={reduce ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={reduce ? undefined : { opacity: 0 }}
-      transition={{ duration: 0.28 }}
+      transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
     >
       <div
         className="pointer-events-none absolute inset-0"
@@ -332,7 +376,7 @@ function CaseViewer({
         }}
       />
       <div className="case-viewer__shell relative flex h-full min-h-0 flex-col overflow-hidden">
-        <header className="case-viewer__header relative z-20 flex shrink-0 items-center justify-between gap-2 border-b border-inverse/16 bg-deep/92 px-[max(1rem,env(safe-area-inset-left))] pb-2.5 pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md pr-[max(1rem,env(safe-area-inset-right))] sm:gap-3 sm:px-6 sm:pb-3 sm:pt-[max(0.65rem,env(safe-area-inset-top))] md:border-0 md:bg-transparent md:px-10 md:pb-2 md:pt-[max(1.75rem,env(safe-area-inset-top))] md:backdrop-blur-none">
+        <header className="case-viewer__header relative z-20 flex shrink-0 items-center justify-between gap-2 border-b border-inverse/16 bg-deep/95 px-[max(1rem,env(safe-area-inset-left))] pb-2.5 pt-[max(0.5rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] sm:gap-3 sm:px-6 sm:pb-3 sm:pt-[max(0.65rem,env(safe-area-inset-top))] md:border-0 md:bg-transparent md:px-10 md:pb-2 md:pt-[max(1.75rem,env(safe-area-inset-top))]">
           <div className="flex min-w-0 flex-1 items-start gap-2.5 sm:gap-4 md:gap-5">
             <div
               className="case-viewer__brand shrink-0 pt-0.5"
@@ -380,7 +424,7 @@ function CaseViewer({
           </button>
         </header>
 
-        <div className="case-viewer__toolbar relative z-20 flex shrink-0 flex-wrap items-center justify-center gap-1.5 border-b border-inverse/16 bg-deep/88 px-[max(1rem,env(safe-area-inset-left))] py-2 backdrop-blur-md pr-[max(1rem,env(safe-area-inset-right))] sm:gap-2 sm:px-6 sm:py-2.5 md:justify-start md:gap-5 md:border-0 md:bg-transparent md:px-10 md:py-0 md:backdrop-blur-none">
+        <div className="case-viewer__toolbar relative z-20 flex shrink-0 flex-wrap items-center justify-center gap-1.5 border-b border-inverse/16 bg-deep/95 px-[max(1rem,env(safe-area-inset-left))] py-2 pr-[max(1rem,env(safe-area-inset-right))] sm:gap-2 sm:px-6 sm:py-2.5 md:justify-start md:gap-5 md:border-0 md:bg-transparent md:px-10 md:py-0">
           <button
             type="button"
             className={`focus-ring min-h-10 rounded-full px-4 text-sm transition md:min-h-0 md:rounded-none md:px-0 md:pb-1 md:text-[0.76rem] md:font-medium md:tracking-[0.16em] md:uppercase ${
@@ -413,41 +457,32 @@ function CaseViewer({
           >
             ← {ui.previous}
           </button>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${item.id}-${view.label}-${mode}`}
-              className="case-viewer__media-wrap"
-              initial={reduce ? false : { opacity: 0, scale: 0.985 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={reduce ? undefined : { opacity: 0, scale: 0.99 }}
-              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {mode === "slider" ? (
-                <CompareSlider
-                  beforeSrc={view.before}
-                  afterSrc={view.after}
-                  beforeAlt={`${item.title} — ${view.label} — ${ui.before.toLowerCase()}`}
-                  afterAlt={`${item.title} — ${view.label} — ${ui.after.toLowerCase()}`}
-                  className="case-viewer-compare"
-                  largeHandle
-                  imageFit="contain"
-                  imagePreset="viewer"
-                />
-              ) : (
-                <ToggleCompare
-                  beforeSrc={view.before}
-                  afterSrc={view.after}
-                  beforeAlt={`${item.title} — ${view.label} — ${ui.before.toLowerCase()}`}
-                  afterAlt={`${item.title} — ${view.label} — ${ui.after.toLowerCase()}`}
-                  className="case-viewer-compare"
-                  showing={showing}
-                  onToggle={setShowing}
-                  imageFit="contain"
-                  imagePreset="viewer"
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
+          <div className="case-viewer__media-wrap">
+            {mode === "slider" ? (
+              <CompareSlider
+                beforeSrc={view.before}
+                afterSrc={view.after}
+                beforeAlt={`${item.title} — ${view.label} — ${ui.before.toLowerCase()}`}
+                afterAlt={`${item.title} — ${view.label} — ${ui.after.toLowerCase()}`}
+                className="case-viewer-compare"
+                largeHandle
+                imageFit="contain"
+                imagePreset="viewer"
+              />
+            ) : (
+              <ToggleCompare
+                beforeSrc={view.before}
+                afterSrc={view.after}
+                beforeAlt={`${item.title} — ${view.label} — ${ui.before.toLowerCase()}`}
+                afterAlt={`${item.title} — ${view.label} — ${ui.after.toLowerCase()}`}
+                className="case-viewer-compare"
+                showing={showing}
+                onToggle={setShowing}
+                imageFit="contain"
+                imagePreset="viewer"
+              />
+            )}
+          </div>
           <button
             type="button"
             onClick={goNext}

@@ -580,6 +580,155 @@ export const gallery: {
     ],
   },
   {
+    id: "rinoplastia-caso-05",
+    label: "Caso 05",
+    title: "Ринопластика",
+    detail: "Анфас, профили, три четверти, снизу и сверху",
+    views: [
+      {
+        label: "Анфас",
+        before: "/images/ba/caso5-frente-antes.jpg",
+        after: "/images/ba/caso5-frente-despues.jpg",
+      },
+      {
+        label: "Анфас с улыбкой",
+        before: "/images/ba/caso5-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Правый профиль",
+        before: "/images/ba/caso5-perfil-der-antes.jpg",
+        after: "/images/ba/caso5-perfil-der-despues.jpg",
+      },
+      {
+        label: "Правый профиль с улыбкой",
+        before: "/images/ba/caso5-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Левый профиль",
+        before: "/images/ba/caso5-perfil-izq-antes.jpg",
+        after: "/images/ba/caso5-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Левый профиль с улыбкой",
+        before: "/images/ba/caso5-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Три четверти справа",
+        before: "/images/ba/caso5-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso5-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Три четверти слева",
+        before: "/images/ba/caso5-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso5-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Снизу",
+        before: "/images/ba/caso5-basal-antes.jpg",
+        after: "/images/ba/caso5-basal-despues.jpg",
+      },
+      {
+        label: "Сверху",
+        before: "/images/ba/caso5-superior-antes.jpg",
+        after: "/images/ba/caso5-superior-despues.jpg",
+      }
+    ],
+  },
+  {
+    id: "rinoplastia-caso-06",
+    label: "Caso 06",
+    title: "Ринопластика",
+    detail: "Анфас, профили, три четверти, снизу и сверху",
+    views: [
+      {
+        label: "Анфас с улыбкой",
+        before: "/images/ba/caso6-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Правый профиль",
+        before: "/images/ba/caso6-perfil-der-antes.jpg",
+        after: "/images/ba/caso6-perfil-der-despues.jpg",
+      },
+      {
+        label: "Правый профиль с улыбкой",
+        before: "/images/ba/caso6-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Левый профиль",
+        before: "/images/ba/caso6-perfil-izq-antes.jpg",
+        after: "/images/ba/caso6-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Левый профиль с улыбкой",
+        before: "/images/ba/caso6-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Три четверти справа",
+        before: "/images/ba/caso6-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso6-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Три четверти слева",
+        before: "/images/ba/caso6-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso6-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Снизу",
+        before: "/images/ba/caso6-basal-antes.jpg",
+        after: "/images/ba/caso6-basal-despues.jpg",
+      },
+      {
+        label: "Сверху",
+        before: "/images/ba/caso6-superior-antes.jpg",
+        after: "/images/ba/caso6-superior-despues.jpg",
+      }
+    ],
+  },
+  {
+    id: "rinoplastia-caso-07",
+    label: "Caso 07",
+    title: "Ринопластика",
+    detail: "Профили, снизу и сверху",
+    views: [
+      {
+        label: "Правый профиль",
+        before: "/images/ba/caso7-perfil-der-antes.jpg",
+        after: "/images/ba/caso7-perfil-der-despues.jpg",
+      },
+      {
+        label: "Правый профиль с улыбкой",
+        before: "/images/ba/caso7-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso7-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Левый профиль",
+        before: "/images/ba/caso7-perfil-izq-antes.jpg",
+        after: "/images/ba/caso7-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Левый профиль с улыбкой",
+        before: "/images/ba/caso7-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso7-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Снизу",
+        before: "/images/ba/caso7-basal-antes.jpg",
+        after: "/images/ba/caso7-basal-despues.jpg",
+      },
+      {
+        label: "Сверху",
+        before: "/images/ba/caso7-superior-antes.jpg",
+        after: "/images/ba/caso7-superior-despues.jpg",
+      }
+    ],
+  },
+  {
     id: "rinoplastia-01",
     label: "Случай 05",
     title: "Ринопластика",

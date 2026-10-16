@@ -36,7 +36,9 @@ export function SmartImage({
   className,
   ...rest
 }: SmartImageProps) {
-  const blur = preset === "logo" ? undefined : blurDataURL(src);
+  // galleryCard: sin blur — al scrollear entran varias a la vez y el decode del placeholder traba
+  const blur =
+    preset === "logo" || preset === "galleryCard" ? undefined : blurDataURL(src);
   const resolvedQuality = quality ?? qualityForPreset[preset];
 
   return (

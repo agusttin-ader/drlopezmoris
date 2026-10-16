@@ -579,8 +579,157 @@ export const gallery: {
     ],
   },
   {
-    id: "rinoplastia-01",
+    id: "rinoplastia-caso-05",
     label: "Caso 05",
+    title: "Rhinoplasty",
+    detail: "Front, profiles, three-quarter, base & top",
+    views: [
+      {
+        label: "Front",
+        before: "/images/ba/caso5-frente-antes.jpg",
+        after: "/images/ba/caso5-frente-despues.jpg",
+      },
+      {
+        label: "Front, smiling",
+        before: "/images/ba/caso5-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right profile",
+        before: "/images/ba/caso5-perfil-der-antes.jpg",
+        after: "/images/ba/caso5-perfil-der-despues.jpg",
+      },
+      {
+        label: "Right profile, smiling",
+        before: "/images/ba/caso5-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Left profile",
+        before: "/images/ba/caso5-perfil-izq-antes.jpg",
+        after: "/images/ba/caso5-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Left profile, smiling",
+        before: "/images/ba/caso5-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right three-quarter",
+        before: "/images/ba/caso5-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso5-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Left three-quarter",
+        before: "/images/ba/caso5-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso5-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Base",
+        before: "/images/ba/caso5-basal-antes.jpg",
+        after: "/images/ba/caso5-basal-despues.jpg",
+      },
+      {
+        label: "Top",
+        before: "/images/ba/caso5-superior-antes.jpg",
+        after: "/images/ba/caso5-superior-despues.jpg",
+      }
+    ],
+  },
+  {
+    id: "rinoplastia-caso-06",
+    label: "Caso 06",
+    title: "Rhinoplasty",
+    detail: "Front, profiles, three-quarter, base & top",
+    views: [
+      {
+        label: "Front, smiling",
+        before: "/images/ba/caso6-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right profile",
+        before: "/images/ba/caso6-perfil-der-antes.jpg",
+        after: "/images/ba/caso6-perfil-der-despues.jpg",
+      },
+      {
+        label: "Right profile, smiling",
+        before: "/images/ba/caso6-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Left profile",
+        before: "/images/ba/caso6-perfil-izq-antes.jpg",
+        after: "/images/ba/caso6-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Left profile, smiling",
+        before: "/images/ba/caso6-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Right three-quarter",
+        before: "/images/ba/caso6-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso6-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Left three-quarter",
+        before: "/images/ba/caso6-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso6-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Base",
+        before: "/images/ba/caso6-basal-antes.jpg",
+        after: "/images/ba/caso6-basal-despues.jpg",
+      },
+      {
+        label: "Top",
+        before: "/images/ba/caso6-superior-antes.jpg",
+        after: "/images/ba/caso6-superior-despues.jpg",
+      }
+    ],
+  },
+  {
+    id: "rinoplastia-caso-07",
+    label: "Caso 07",
+    title: "Rhinoplasty",
+    detail: "Profiles, base & top",
+    views: [
+      {
+        label: "Right profile",
+        before: "/images/ba/caso7-perfil-der-antes.jpg",
+        after: "/images/ba/caso7-perfil-der-despues.jpg",
+      },
+      {
+        label: "Right profile, smiling",
+        before: "/images/ba/caso7-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso7-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Left profile",
+        before: "/images/ba/caso7-perfil-izq-antes.jpg",
+        after: "/images/ba/caso7-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Left profile, smiling",
+        before: "/images/ba/caso7-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso7-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Base",
+        before: "/images/ba/caso7-basal-antes.jpg",
+        after: "/images/ba/caso7-basal-despues.jpg",
+      },
+      {
+        label: "Top",
+        before: "/images/ba/caso7-superior-antes.jpg",
+        after: "/images/ba/caso7-superior-despues.jpg",
+      }
+    ],
+  },
+  {
+    id: "rinoplastia-01",
+    label: "Caso 08",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -593,7 +742,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-02",
-    label: "Caso 06",
+    label: "Caso 09",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -606,7 +755,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-03",
-    label: "Caso 07",
+    label: "Caso 10",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -619,7 +768,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-04",
-    label: "Caso 08",
+    label: "Caso 11",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -632,7 +781,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-05",
-    label: "Caso 09",
+    label: "Caso 12",
     title: "Rhinoplasty",
     detail: "Profile view",
     views: [
@@ -645,7 +794,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-06",
-    label: "Caso 10",
+    label: "Caso 13",
     title: "Rhinoplasty",
     detail: "Profile & three-quarter",
     views: [

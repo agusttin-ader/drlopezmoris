@@ -580,8 +580,157 @@ export const gallery: {
     ],
   },
   {
-    id: "rinoplastia-01",
+    id: "rinoplastia-caso-05",
     label: "Caso 05",
+    title: "Rinoplastia",
+    detail: "Frente, perfiles, tres cuartos, basal y superior",
+    views: [
+      {
+        label: "Frente",
+        before: "/images/ba/caso5-frente-antes.jpg",
+        after: "/images/ba/caso5-frente-despues.jpg",
+      },
+      {
+        label: "Frente sonriendo",
+        before: "/images/ba/caso5-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil derecho",
+        before: "/images/ba/caso5-perfil-der-antes.jpg",
+        after: "/images/ba/caso5-perfil-der-despues.jpg",
+      },
+      {
+        label: "Perfil derecho sonriendo",
+        before: "/images/ba/caso5-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo",
+        before: "/images/ba/caso5-perfil-izq-antes.jpg",
+        after: "/images/ba/caso5-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo sonriendo",
+        before: "/images/ba/caso5-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso5-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Tres cuartos derecho",
+        before: "/images/ba/caso5-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso5-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Tres cuartos izquierdo",
+        before: "/images/ba/caso5-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso5-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Basal",
+        before: "/images/ba/caso5-basal-antes.jpg",
+        after: "/images/ba/caso5-basal-despues.jpg",
+      },
+      {
+        label: "Superior",
+        before: "/images/ba/caso5-superior-antes.jpg",
+        after: "/images/ba/caso5-superior-despues.jpg",
+      }
+    ],
+  },
+  {
+    id: "rinoplastia-caso-06",
+    label: "Caso 06",
+    title: "Rinoplastia",
+    detail: "Frente, perfiles, tres cuartos, basal y superior",
+    views: [
+      {
+        label: "Frente sonriendo",
+        before: "/images/ba/caso6-frente-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-frente-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil derecho",
+        before: "/images/ba/caso6-perfil-der-antes.jpg",
+        after: "/images/ba/caso6-perfil-der-despues.jpg",
+      },
+      {
+        label: "Perfil derecho sonriendo",
+        before: "/images/ba/caso6-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo",
+        before: "/images/ba/caso6-perfil-izq-antes.jpg",
+        after: "/images/ba/caso6-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo sonriendo",
+        before: "/images/ba/caso6-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso6-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Tres cuartos derecho",
+        before: "/images/ba/caso6-tres-cuartos-der-antes.jpg",
+        after: "/images/ba/caso6-tres-cuartos-der-despues.jpg",
+      },
+      {
+        label: "Tres cuartos izquierdo",
+        before: "/images/ba/caso6-tres-cuartos-izq-antes.jpg",
+        after: "/images/ba/caso6-tres-cuartos-izq-despues.jpg",
+      },
+      {
+        label: "Basal",
+        before: "/images/ba/caso6-basal-antes.jpg",
+        after: "/images/ba/caso6-basal-despues.jpg",
+      },
+      {
+        label: "Superior",
+        before: "/images/ba/caso6-superior-antes.jpg",
+        after: "/images/ba/caso6-superior-despues.jpg",
+      }
+    ],
+  },
+  {
+    id: "rinoplastia-caso-07",
+    label: "Caso 07",
+    title: "Rinoplastia",
+    detail: "Perfiles, basal y superior",
+    views: [
+      {
+        label: "Perfil derecho",
+        before: "/images/ba/caso7-perfil-der-antes.jpg",
+        after: "/images/ba/caso7-perfil-der-despues.jpg",
+      },
+      {
+        label: "Perfil derecho sonriendo",
+        before: "/images/ba/caso7-perfil-der-sonrisa-antes.jpg",
+        after: "/images/ba/caso7-perfil-der-sonrisa-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo",
+        before: "/images/ba/caso7-perfil-izq-antes.jpg",
+        after: "/images/ba/caso7-perfil-izq-despues.jpg",
+      },
+      {
+        label: "Perfil izquierdo sonriendo",
+        before: "/images/ba/caso7-perfil-izq-sonrisa-antes.jpg",
+        after: "/images/ba/caso7-perfil-izq-sonrisa-despues.jpg",
+      },
+      {
+        label: "Basal",
+        before: "/images/ba/caso7-basal-antes.jpg",
+        after: "/images/ba/caso7-basal-despues.jpg",
+      },
+      {
+        label: "Superior",
+        before: "/images/ba/caso7-superior-antes.jpg",
+        after: "/images/ba/caso7-superior-despues.jpg",
+      }
+    ],
+  },
+  {
+    id: "rinoplastia-01",
+    label: "Caso 08",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -594,7 +743,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-02",
-    label: "Caso 06",
+    label: "Caso 09",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -607,7 +756,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-03",
-    label: "Caso 07",
+    label: "Caso 10",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -620,7 +769,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-04",
-    label: "Caso 08",
+    label: "Caso 11",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -633,7 +782,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-05",
-    label: "Caso 09",
+    label: "Caso 12",
     title: "Rinoplastia",
     detail: "Vista de perfil",
     views: [
@@ -646,7 +795,7 @@ export const gallery: {
   },
   {
     id: "rinoplastia-06",
-    label: "Caso 10",
+    label: "Caso 13",
     title: "Rinoplastia",
     detail: "Perfil y tres cuartos",
     views: [

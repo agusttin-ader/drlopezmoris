@@ -9,7 +9,7 @@ export const imageQuality = {
   /** Retratos de sección */
   section: 80,
   /** Tarjetas de galería / diplomas */
-  card: 76,
+  card: 72,
   /** Visores a pantalla completa (antes/después) */
   viewer: 88,
   /** Logo y chrome chico */
@@ -26,12 +26,13 @@ export const imageSizes = {
   portrait: "(max-width: 640px) 100vw, (max-width: 1024px) 92vw, 40vw",
   /** Miniaturas de retrato */
   portraitThumb: "(max-width: 1024px) 45vw, 18vw",
-  /** Mitad de un par antes/después */
-  galleryCard: "(max-width: 640px) 48vw, (max-width: 1024px) 45vw, 28vw",
+  /** Mitad de un par antes/después — tope de ancho para no pedir 2K al scrollear */
+  galleryCard: "(max-width: 640px) 48vw, (max-width: 1024px) 40vw, 420px",
   /** Grilla de diplomas */
   diplomaCard: "(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 30vw",
   /** Lightbox / visor */
   viewer: "(max-width: 768px) 100vw, min(1100px, 85vw)",
   /** Comparador dentro del caso */
-  compare: "(max-width: 768px) 100vw, min(1000px, 80vw)",  logo: "40px",
+  compare: "(max-width: 768px) 100vw, min(1000px, 80vw)",
+  logo: "40px",
 } as const;
