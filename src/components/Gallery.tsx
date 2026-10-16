@@ -183,6 +183,23 @@ function PreviewHalf({
   );
 }
 
+/** Perfil mirando a la derecha (izq del paciente) / izquierda (der), intercalado en los primeros 6. */
+function initialProfileViewIndex(
+  item: ReturnType<typeof useMessages>["gallery"][number],
+  index: number,
+): number {
+  if (index >= 6) return 0;
+  const lookingRight = index % 2 === 0;
+  const side = lookingRight ? "perfil-izq" : "perfil-der";
+  const paths = item.views.map((v) => v.before);
+  const plain = paths.findIndex((p) => p.includes(`${side}-antes`));
+  if (plain >= 0) return plain;
+  const any = paths.findIndex((p) => p.includes(side));
+  if (any >= 0) return any;
+  const fallback = paths.findIndex((p) => p.includes("perfil-"));
+  return fallback >= 0 ? fallback : 0;
+}
+
 function CaseStudyCard({
   item,
   index,
@@ -196,7 +213,7 @@ function CaseStudyCard({
 }) {
   const { ui } = useMessages();
   const reverse = index % 2 === 1;
-  const [previewView, setPreviewView] = useState(0);
+  const previewView = initialProfileViewIndex(item, index);
   const cover = item.views[Math.min(previewView, item.views.length - 1)] ?? item.views[0];
   const eager = index === 0;
 
@@ -204,12 +221,6 @@ function CaseStudyCard({
     const v = item.views[view] ?? item.views[0];
     if (v) prefetchOptimizedImages([v.before, v.after], "viewer");
     onOpen(view);
-  };
-
-  const previewAngle = (i: number) => {
-    setPreviewView(i);
-    const v = item.views[i];
-    if (v) prefetchOptimizedImages([v.before, v.after], "viewer");
   };
 
   return (
@@ -261,11 +272,7 @@ function CaseStudyCard({
                 <li key={v.label} className="case-angles__item">
                   <button
                     type="button"
-                    className={`case-angles__link focus-ring ${
-                      i === previewView ? "is-active" : ""
-                    }`}
-                    onMouseEnter={() => previewAngle(i)}
-                    onFocus={() => previewAngle(i)}
+                    className="case-angles__link focus-ring"
                     onClick={() => openCase(i)}
                   >
                     {v.label.replace(/^Vista de /i, "")}
@@ -278,7 +285,7 @@ function CaseStudyCard({
         <button
           type="button"
           onClick={() => openCase(previewView)}
-          className="btn btn-secondary focus-ring mt-6 w-full sm:w-auto"
+          className="btn btn-secondary focus-ring mt-6 w-full"
         >
           {ui.seeCase}
         </button>

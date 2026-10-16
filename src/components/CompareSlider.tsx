@@ -296,13 +296,13 @@ export function ToggleCompare({
         }`}
         priority
       />
-      <div className="absolute inset-x-0 bottom-0 z-10 flex justify-center gap-2 p-4">
+      <div className="absolute inset-x-0 bottom-0 z-10 flex justify-center gap-2 bg-gradient-to-t from-black/70 via-black/35 to-transparent px-4 pb-4 pt-10">
         <button
           type="button"
           className={`focus-ring min-h-11 rounded-full px-5 text-sm font-medium transition ${
             showing === "before"
-              ? "bg-inverse text-text"
-              : "border border-white/25 bg-white/10 text-inverse"
+              ? "bg-inverse text-text shadow-[0_4px_16px_rgba(0,0,0,0.35)]"
+              : "border border-white/35 bg-black/55 text-white hover:bg-black/70"
           }`}
           onClick={() => onToggle("before")}
         >
@@ -312,8 +312,8 @@ export function ToggleCompare({
           type="button"
           className={`focus-ring min-h-11 rounded-full px-5 text-sm font-medium transition ${
             showing === "after"
-              ? "bg-inverse text-text"
-              : "border border-white/25 bg-white/10 text-inverse"
+              ? "bg-inverse text-text shadow-[0_4px_16px_rgba(0,0,0,0.35)]"
+              : "border border-white/35 bg-black/55 text-white hover:bg-black/70"
           }`}
           onClick={() => onToggle("after")}
         >

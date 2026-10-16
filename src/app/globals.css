@@ -880,14 +880,9 @@ video {
     text-decoration-color 0.2s ease;
 }
 
-.case-angles__link:hover,
-.case-angles__link.is-active {
+.case-angles__link:hover {
   color: var(--text);
   text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
-}
-
-.case-angles__link.is-active {
-  text-decoration-color: color-mix(in srgb, var(--accent) 75%, transparent);
 }
 
 .case-viewer__footer {
